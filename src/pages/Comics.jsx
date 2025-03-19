@@ -1,13 +1,22 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
 
-function Comics({ search }) {
+function Comics() {
   const [comics, setComics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [localSearch, setLocalSearch] = useState("");
   const [favorites, setFavorites] = useState(
     JSON.parse(localStorage.getItem("favoriteComics")) || []
   );
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const globalSearch = queryParams.get("search") || "";
 
   useEffect(() => {
     const fetchComics = async () => {
@@ -16,7 +25,11 @@ function Comics({ search }) {
         const response = await axios.get(
           "https://site--marvel--pj2lbzfpm8z4.code.run/comics",
           {
-            params: { limit: 100, skip: (page - 1) * 100, title: search },
+            params: {
+              limit: 100,
+              skip: (page - 1) * 100,
+              title: globalSearch || localSearch,
+            },
           }
         );
         setComics(response.data.results);
@@ -27,7 +40,7 @@ function Comics({ search }) {
     };
 
     fetchComics();
-  }, [page, search]);
+  }, [page, localSearch, globalSearch]);
 
   const toggleFavorite = (comic) => {
     let updatedFavorites;
@@ -42,6 +55,18 @@ function Comics({ search }) {
 
   return (
     <div>
+      <div className="local-search-container">
+        <div className="local-search">
+          <FontAwesomeIcon icon={faSuperpowers} className="local-search-icon" />
+          <input
+            type="text"
+            placeholder="Rechercher un comic..."
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
+          />
+        </div>
+      </div>
+
       {loading ? (
         <p>Chargement...</p>
       ) : (
@@ -58,8 +83,8 @@ function Comics({ search }) {
                 onClick={() => toggleFavorite(comic)}
               >
                 {favorites.some((fav) => fav._id === comic._id)
-                  ? "Retirer des favoris 💔"
-                  : "Ajouter aux favoris ❤️"}
+                  ? "💔 Retirer"
+                  : "❤️ Ajouter"}
               </button>
             </div>
           ))}

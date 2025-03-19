@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
 
 function Favorites() {
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
   const [favoriteComics, setFavoriteComics] = useState([]);
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
 
   useEffect(() => {
     setFavoriteCharacters(
@@ -22,74 +23,62 @@ function Favorites() {
     comic.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  const paginatedCharacters = filteredCharacters.slice(startIndex, endIndex);
-  const paginatedComics = filteredComics.slice(startIndex, endIndex);
-
   return (
-    <div>
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Rechercher un favori..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+    <div className="favorites-container">
+      <h2>Mes Favoris</h2>
+
+      {/* ✅ Barre de recherche stylisée */}
+      <div className="local-search-container">
+        <div className="local-search">
+          <FontAwesomeIcon icon={faSuperpowers} className="local-search-icon" />
+          <input
+            type="text"
+            placeholder="Rechercher dans vos favoris..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
 
-      <h3>Personnages</h3>
-      {paginatedCharacters.length === 0 ? (
-        <p>Aucun personnage en favori.</p>
-      ) : (
-        <div className="grid-container">
-          {paginatedCharacters.map((char) => (
-            <div key={char._id} className="card">
-              <img
-                src={`${char.thumbnail.path}/portrait_xlarge.${char.thumbnail.extension}`}
-                alt={char.name}
-              />
-              <p>{char.name}</p>
-            </div>
-          ))}
+      {/* ✅ Affichage en deux colonnes (personnages / comics) */}
+      <div className="results-grid">
+        {/* 🌟 Colonne Personnages */}
+        <div className="results-column">
+          <h3>Personnages</h3>
+          {filteredCharacters.length === 0 ? (
+            <p>Aucun personnage en favori.</p>
+          ) : (
+            filteredCharacters.map((char) => (
+              <div key={char._id} className="card">
+                <Link to={`/character/${char._id}`}>
+                  <img
+                    src={`${char.thumbnail.path}/portrait_xlarge.${char.thumbnail.extension}`}
+                    alt={char.name}
+                  />
+                  <p>{char.name}</p>
+                </Link>
+              </div>
+            ))
+          )}
         </div>
-      )}
 
-      <h3>Comics</h3>
-      {paginatedComics.length === 0 ? (
-        <p>Aucun comic en favori.</p>
-      ) : (
-        <div className="grid-container">
-          {paginatedComics.map((comic) => (
-            <div key={comic._id} className="card">
-              <img
-                src={`${comic.thumbnail.path}/portrait_xlarge.${comic.thumbnail.extension}`}
-                alt={comic.title}
-              />
-              <p>{comic.title}</p>
-            </div>
-          ))}
+        {/* 🌟 Colonne Comics */}
+        <div className="results-column">
+          <h3>Comics</h3>
+          {filteredComics.length === 0 ? (
+            <p>Aucun comic en favori.</p>
+          ) : (
+            filteredComics.map((comic) => (
+              <div key={comic._id} className="card">
+                <img
+                  src={`${comic.thumbnail.path}/portrait_xlarge.${comic.thumbnail.extension}`}
+                  alt={comic.title}
+                />
+                <p>{comic.title}</p>
+              </div>
+            ))
+          )}
         </div>
-      )}
-
-      <div className="pagination">
-        <button
-          onClick={() => setPage((prev) => Math.max(1, prev - 1))}
-          disabled={page === 1}
-        >
-          Précédent
-        </button>
-        <span>Page {page}</span>
-        <button
-          onClick={() => setPage((prev) => prev + 1)}
-          disabled={
-            endIndex >= filteredCharacters.length &&
-            endIndex >= filteredComics.length
-          }
-        >
-          Suivant
-        </button>
       </div>
     </div>
   );

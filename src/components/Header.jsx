@@ -1,16 +1,19 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "/marvel-logo.png";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
 
-function Header({ onSearch }) {
-  const [search, setSearch] = useState("");
+function Header() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
   const location = useLocation();
 
   const handleSearch = (e) => {
-    setSearch(e.target.value);
-    onSearch(e.target.value);
+    e.preventDefault();
+    if (searchQuery.trim() !== "") {
+      navigate(`/search?query=${searchQuery}`);
+    }
   };
 
   return (
@@ -19,17 +22,18 @@ function Header({ onSearch }) {
         <img src={logo} alt="Marvel Logo" className="logo" />
       </Link>
 
+      {/* ✅ Recherche globale redirigeant vers /search */}
       {location.pathname !== "/favorites" && (
-        <div className="search-container">
+        <form className="search-container" onSubmit={handleSearch}>
           <FontAwesomeIcon icon={faSuperpowers} className="search-icon" />
           <input
             type="text"
-            placeholder="Rechercher..."
-            value={search}
-            onChange={handleSearch}
+            placeholder="Rechercher sur tout le site..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="search-bar"
           />
-        </div>
+        </form>
       )}
 
       <nav>

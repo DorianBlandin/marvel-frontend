@@ -1,14 +1,22 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
 
-function Characters({ search }) {
+function Characters() {
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [localSearch, setLocalSearch] = useState("");
   const [favorites, setFavorites] = useState(
     JSON.parse(localStorage.getItem("favoriteCharacters")) || []
   );
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const globalSearch = queryParams.get("search") || "";
 
   useEffect(() => {
     const fetchCharacters = async () => {
@@ -17,7 +25,11 @@ function Characters({ search }) {
         const response = await axios.get(
           "https://site--marvel--pj2lbzfpm8z4.code.run/characters",
           {
-            params: { limit: 100, skip: (page - 1) * 100, name: search },
+            params: {
+              limit: 100,
+              skip: (page - 1) * 100,
+              name: globalSearch || localSearch,
+            },
           }
         );
         setCharacters(response.data.results);
@@ -31,14 +43,14 @@ function Characters({ search }) {
     };
 
     fetchCharacters();
-  }, [page, search]);
+  }, [page, localSearch, globalSearch]);
 
-  const toggleFavorite = (char) => {
+  const toggleFavorite = (character) => {
     let updatedFavorites;
-    if (favorites.some((fav) => fav._id === char._id)) {
-      updatedFavorites = favorites.filter((fav) => fav._id !== char._id);
+    if (favorites.some((fav) => fav._id === character._id)) {
+      updatedFavorites = favorites.filter((fav) => fav._id !== character._id);
     } else {
-      updatedFavorites = [...favorites, char];
+      updatedFavorites = [...favorites, character];
     }
     setFavorites(updatedFavorites);
     localStorage.setItem(
@@ -49,6 +61,18 @@ function Characters({ search }) {
 
   return (
     <div>
+      <div className="local-search-container">
+        <div className="local-search">
+          <FontAwesomeIcon icon={faSuperpowers} className="local-search-icon" />
+          <input
+            type="text"
+            placeholder="Rechercher un personnage..."
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
+          />
+        </div>
+      </div>
+
       {loading ? (
         <p>Chargement...</p>
       ) : (
@@ -67,8 +91,8 @@ function Characters({ search }) {
                 onClick={() => toggleFavorite(char)}
               >
                 {favorites.some((fav) => fav._id === char._id)
-                  ? "Retirer des favoris 💔"
-                  : "Ajouter aux favoris ❤️"}
+                  ? "💔 Retirer"
+                  : "❤️ Ajouter"}
               </button>
             </div>
           ))}

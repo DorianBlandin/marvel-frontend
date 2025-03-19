@@ -1,26 +1,25 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
 import Characters from "./pages/Characters";
 import Comics from "./pages/Comics";
 import Favorites from "./pages/Favorites";
 import CharacterDetail from "./pages/CharacterDetail";
 import Home from "./pages/Home";
+import SearchResults from "./pages/SearchResults"; // ✅ Nouvelle page
 import Header from "./components/Header";
 import "./App.css";
 
 function App() {
-  const [search, setSearch] = useState("");
-
   return (
     <Router>
-      <Header onSearch={setSearch} />
-
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/characters" element={<Characters search={search} />} />
-        <Route path="/comics" element={<Comics search={search} />} />
+        <Route path="/characters" element={<Characters />} />
+        <Route path="/comics" element={<Comics />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/character/:characterId" element={<CharacterDetail />} />
+        <Route path="/search" element={<SearchResults />} />{" "}
+        {/* ✅ Route ajoutée */}
         <Route path="*" element={<h2>404 - Page non trouvée</h2>} />
       </Routes>
     </Router>
