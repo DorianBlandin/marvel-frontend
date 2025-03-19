@@ -72,7 +72,7 @@ function Comics() {
       ) : (
         <div className="grid-container">
           {comics.map((comic) => (
-            <div key={comic._id} className="card">
+            <div key={comic._id} className="comic-card">
               <img
                 src={`${comic.thumbnail.path}/portrait_xlarge.${comic.thumbnail.extension}`}
                 alt={comic.title}

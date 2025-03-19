@@ -1,3 +1,18 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -6,22 +21,37 @@ body {
   color: #ffffff;
 }
 
-.header {
+.higher-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
+  padding: 5px 20px;
   background-color: #202020;
   color: white;
+  position: relative;
 }
 
-.logo {
-  height: 50px;
-  transition: transform 0.3s ease-in-out;
+.auth-buttons {
+  display: flex;
+  gap: 10px;
 }
 
-.logo:hover {
-  transform: scale(1.1);
+.connection-btn {
+  background-color: #e62429;
+  color: white;
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out;
+}
+
+.connection-btn:hover {
+  background-color: #c51d24;
+}
+
+.logo-container {
+  flex: 1;
 }
 
 .search-container {
@@ -33,6 +63,31 @@ body {
   border: 1px solid #ccc;
   width: 100%;
   max-width: 400px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.logo {
+  height: 50px;
+  transition: transform 0.3s ease-in-out;
+  justify-content: center;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 0px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .search-icon {
@@ -49,6 +104,14 @@ body {
   font-size: 16px;
 }
 
+.lower-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background-color: #202020;
+}
+
 nav {
   display: flex;
   gap: 15px;
@@ -57,16 +120,15 @@ nav {
 .nav-btn {
   color: white;
   text-decoration: none;
-  background-color: #e62429;
+  background-color: #202020;
   padding: 10px 20px;
-  border-radius: 5px;
   font-weight: bold;
   transition: background 0.3s, transform 0.2s;
 }
 
 .nav-btn:hover {
-  background-color: #c51d24;
-  transform: translateY(-2px);
+  border-right: #ffffff solid 2px;
+  border-left: #ffffff solid 2px;
 }
 
 .home-container {
@@ -116,7 +178,7 @@ nav {
   display: flex;
   align-items: center;
   background-color: #202020;
-  padding: 8px 12px;
+  padding: 0px 12px;
   border-radius: 5px;
   border: 1px solid #ccc;
   width: 100%;
@@ -147,18 +209,6 @@ nav {
   padding: 20px;
   max-width: 1200px;
   margin: auto;
-}
-
-.favorite-btn {
-  background-color: transparent;
-  color: rgb(255, 0, 0);
-  border: none;
-  padding: 5px;
-  margin-top: 5px;
-  border-radius: 5px;
-  border: #c51d24 solid 1px;
-  cursor: pointer;
-  transition: background 0.3s;
 }
 
 .favorite-btn:hover {
@@ -285,39 +335,6 @@ nav {
   padding: 20px;
 }
 
-.local-search-container {
-  display: flex;
-  justify-content: center;
-  margin: 20px auto;
-}
-
-.local-search {
-  display: flex;
-  align-items: center;
-  background-color: #202020;
-  padding: 8px 12px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 100%;
-  max-width: 400px;
-}
-
-.local-search-icon {
-  font-size: 20px;
-  color: #ffffff;
-  margin-right: 10px;
-}
-
-.local-search input {
-  flex: 1;
-  padding: 8px;
-  border: none;
-  outline: none;
-  font-size: 16px;
-  background-color: #202020;
-  color: white;
-}
-
 .results-grid {
   display: flex;
   justify-content: center;
@@ -353,12 +370,12 @@ nav {
   background-color: transparent;
   color: rgb(255, 0, 0);
   border: none;
-  padding: 8px;
+  padding: 5px;
   margin-top: 10px;
   border-radius: 5px;
-  border: #c51d24 solid 1px;
+  /* border: #c51d24 solid 1px; */
   cursor: pointer;
-  font-size: 16px;
+  font-size: 10px;
   transition: background 0.3s;
   margin-bottom: 10px;
 }
@@ -389,7 +406,7 @@ nav {
   align-items: center;
   justify-content: space-between;
   width: 160px;
-  height: 250px;
+  height: auto;
   margin: auto;
   overflow: hidden;
 }
@@ -405,11 +422,10 @@ nav {
   font-size: 14px;
   margin-top: 5px;
   font-weight: bold;
-  max-height: 40px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 90%;
+  white-space: normal;
+  text-align: center;
+  width: 100%;
+  color: #000000;
 }
 
 .back-btn {
@@ -465,8 +481,7 @@ nav {
   text-align: center;
   padding: 15px 0;
   font-size: 14px;
-  position: fixed;
-  bottom: 0;
+  margin-top: auto;
   width: 100%;
 }
 
@@ -476,4 +491,48 @@ nav {
 
 .footer p:nth-of-type(2) {
   color: #202020;
+}
+
+.auth-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.auth-container h2 {
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.auth-container input {
+  width: 95%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.auth-container button {
+  background-color: #e62429;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 30%;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.auth-container button:hover {
+  background-color: #c51d24;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
 }

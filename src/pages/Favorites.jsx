@@ -24,10 +24,7 @@ function Favorites() {
   );
 
   return (
-    <div className="favorites-container">
-      <h2>Mes Favoris</h2>
-
-      {/* ✅ Barre de recherche stylisée */}
+    <div>
       <div className="local-search-container">
         <div className="local-search">
           <FontAwesomeIcon icon={faSuperpowers} className="local-search-icon" />
@@ -39,45 +36,43 @@ function Favorites() {
           />
         </div>
       </div>
+      <div className="favorites-container">
+        <div className="results-grid">
+          <div className="results-column">
+            <h3>Personnages</h3>
+            {filteredCharacters.length === 0 ? (
+              <p>Aucun personnage en favori.</p>
+            ) : (
+              filteredCharacters.map((char) => (
+                <div key={char._id} className="card">
+                  <Link to={`/character/${char._id}`}>
+                    <img
+                      src={`${char.thumbnail.path}/portrait_xlarge.${char.thumbnail.extension}`}
+                      alt={char.name}
+                    />
+                    <p>{char.name}</p>
+                  </Link>
+                </div>
+              ))
+            )}
+          </div>
 
-      {/* ✅ Affichage en deux colonnes (personnages / comics) */}
-      <div className="results-grid">
-        {/* 🌟 Colonne Personnages */}
-        <div className="results-column">
-          <h3>Personnages</h3>
-          {filteredCharacters.length === 0 ? (
-            <p>Aucun personnage en favori.</p>
-          ) : (
-            filteredCharacters.map((char) => (
-              <div key={char._id} className="card">
-                <Link to={`/character/${char._id}`}>
+          <div className="results-column">
+            <h3>Comics</h3>
+            {filteredComics.length === 0 ? (
+              <p>Aucun comic en favori.</p>
+            ) : (
+              filteredComics.map((comic) => (
+                <div key={comic._id} className="card">
                   <img
-                    src={`${char.thumbnail.path}/portrait_xlarge.${char.thumbnail.extension}`}
-                    alt={char.name}
+                    src={`${comic.thumbnail.path}/portrait_xlarge.${comic.thumbnail.extension}`}
+                    alt={comic.title}
                   />
-                  <p>{char.name}</p>
-                </Link>
-              </div>
-            ))
-          )}
-        </div>
-
-        {/* 🌟 Colonne Comics */}
-        <div className="results-column">
-          <h3>Comics</h3>
-          {filteredComics.length === 0 ? (
-            <p>Aucun comic en favori.</p>
-          ) : (
-            filteredComics.map((comic) => (
-              <div key={comic._id} className="card">
-                <img
-                  src={`${comic.thumbnail.path}/portrait_xlarge.${comic.thumbnail.extension}`}
-                  alt={comic.title}
-                />
-                <p>{comic.title}</p>
-              </div>
-            ))
-          )}
+                  <p>{comic.title}</p>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </div>

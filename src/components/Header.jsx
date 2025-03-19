@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
 
-function Header() {
+function Header({ userToken, setUser }) {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -18,12 +18,13 @@ function Header() {
 
   return (
     <header className="header">
-      <Link to="/">
-        <img src={logo} alt="Marvel Logo" className="logo" />
-      </Link>
+      <div className="higher-header">
+        <div className="logo-container">
+          <Link to="/">
+            <img src={logo} alt="Marvel Logo" className="logo" />
+          </Link>
+        </div>
 
-      {/* ✅ Recherche globale redirigeant vers /search */}
-      {location.pathname !== "/favorites" && (
         <form className="search-container" onSubmit={handleSearch}>
           <FontAwesomeIcon icon={faSuperpowers} className="search-icon" />
           <input
@@ -34,9 +35,26 @@ function Header() {
             className="search-bar"
           />
         </form>
-      )}
 
-      <nav>
+        <div className="auth-buttons">
+          {userToken ? (
+            <button className="connection-btn" onClick={() => setUser(null)}>
+              Se déconnecter
+            </button>
+          ) : (
+            <>
+              <Link to="/signup" className="connection-btn">
+                S'inscrire
+              </Link>
+              <Link to="/login" className="connection-btn">
+                Se connecter
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+
+      <div className="lower-header">
         <Link to="/characters" className="nav-btn">
           Personnages
         </Link>
@@ -46,7 +64,7 @@ function Header() {
         <Link to="/favorites" className="nav-btn">
           Favoris
         </Link>
-      </nav>
+      </div>
     </header>
   );
 }
