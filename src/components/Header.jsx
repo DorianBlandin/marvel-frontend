@@ -29,7 +29,7 @@ function Header({ userToken, setUser }) {
           <FontAwesomeIcon icon={faSuperpowers} className="search-icon" />
           <input
             type="text"
-            placeholder="Rechercher sur tout le site..."
+            placeholder="Rechercher un personnage ou un comic..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-bar"
