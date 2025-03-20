@@ -32,6 +32,7 @@
   cursor: pointer;
   font-size: 16px;
   white-space: nowrap;
+  margin-bottom: 10px;
 }
 
 .auth-container button:hover {
@@ -41,6 +42,13 @@
 .error {
   color: red;
   font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.login-redirection {
+  text-decoration: none;
+  color: #c51d24;
 }
 
 @media (max-width: 600px) {

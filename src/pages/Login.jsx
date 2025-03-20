@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login({ setUser }) {
   const [email, setEmail] = useState("");
@@ -52,6 +52,9 @@ function Login({ setUser }) {
         <button type="submit">Se connecter</button>
       </form>
       {errorMessage && <p className="error">{errorMessage}</p>}
+      <Link to="/signup" className="login-redirection">
+        Pas encore de compte ? Inscrivez-vous !
+      </Link>
     </div>
   );
 }

@@ -78,7 +78,6 @@ function Favorites({ userToken }) {
           )}
         </div>
 
-        {/* Ligne Comics */}
         <h3>Comics favoris</h3>
         <div className="horizontal-scroll">
           {favoriteComics.length === 0 ? (
