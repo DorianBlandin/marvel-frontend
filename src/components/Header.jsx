@@ -38,9 +38,9 @@ function Header({ userToken, onLogout }) {
 
         <div className="auth-buttons">
           {userToken ? (
-            <button onClick={onLogout} className="connection-btn">
+            <Link to="/" onClick={onLogout} className="connection-btn">
               Se Déconnecter
-            </button>
+            </Link>
           ) : (
             <>
               <Link to="/signup" className="connection-btn">

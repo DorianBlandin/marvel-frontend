@@ -31,6 +31,7 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  white-space: nowrap;
 }
 
 .auth-container button:hover {
@@ -40,4 +41,22 @@
 .error {
   color: red;
   font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .auth-container {
+    width: 90%; /* Au lieu d'une largeur fixe */
+    max-width: 320px; /* Empêche qu'il devienne trop large */
+    padding: 15px;
+  }
+
+  .auth-container input {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .auth-container button {
+    font-size: 14px;
+    padding: 8px;
+  }
 }

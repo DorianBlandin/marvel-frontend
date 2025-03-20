@@ -1,54 +1,46 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams, Link } from "react-router-dom";
+import axios from "axios";
+import Card from "../components/Card";
 
-function CharacterDetail() {
+function CharacterDetail({ favoriteComics, toggleFavorite }) {
   const { characterId } = useParams();
   const [character, setCharacter] = useState(null);
   const [comics, setComics] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [favorites, setFavorites] = useState(
-    JSON.parse(localStorage.getItem("favoriteCharacters")) || []
-  );
 
   useEffect(() => {
-    const fetchCharacterData = async () => {
-      setLoading(true);
+    const fetchCharacterDetails = async () => {
       try {
-        const charResponse = await axios.get(
+        const response = await axios.get(
           `https://site--marvel--pj2lbzfpm8z4.code.run/character/${characterId}`
         );
-        setCharacter(charResponse.data);
-
-        const comicsResponse = await axios.get(
-          `https://site--marvel--pj2lbzfpm8z4.code.run/comics/${characterId}`
-        );
-        setComics(comicsResponse.data?.comics || []);
+        setCharacter(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération du personnage :", error);
+      }
+    };
+
+    const fetchComics = async () => {
+      try {
+        const response = await axios.get(
+          `https://site--marvel--pj2lbzfpm8z4.code.run/comics/${characterId}`
+        );
+
+        setComics(response.data.comics);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des comics :", error);
       }
       setLoading(false);
     };
 
-    fetchCharacterData();
+    fetchCharacterDetails();
+    fetchComics();
   }, [characterId]);
 
-  const toggleFavorite = () => {
-    let updatedFavorites;
-    if (favorites.some((fav) => fav._id === character._id)) {
-      updatedFavorites = favorites.filter((fav) => fav._id !== character._id);
-    } else {
-      updatedFavorites = [...favorites, character];
-    }
-    setFavorites(updatedFavorites);
-    localStorage.setItem(
-      "favoriteCharacters",
-      JSON.stringify(updatedFavorites)
-    );
-  };
-
-  if (loading) return <p>Chargement...</p>;
-  if (!character) return <p>Personnage introuvable.</p>;
+  if (loading) {
+    return <p>Chargement...</p>;
+  }
 
   return (
     <div className="character-detail-container">
@@ -60,23 +52,21 @@ function CharacterDetail() {
       />
       <p>{character.description || "Pas de description disponible."}</p>
 
-      <button className="favorite-btn" onClick={toggleFavorite}></button>
       <div className="comics-found">
         <h3>Présent·e·s dans :</h3>
-        {comics.length === 0 ? (
-          <p>Aucun comic trouvé pour ce personnage.</p>
-        ) : (
+        {comics && comics.length > 0 ? (
           <div className="comics-grid">
             {comics.map((comic) => (
-              <div key={comic._id} className="comic-card">
-                <img
-                  src={`${comic.thumbnail.path}/portrait_xlarge.${comic.thumbnail.extension}`}
-                  alt={comic.title}
-                />
-                <p>{comic.title}</p>
-              </div>
+              <Card
+                key={comic._id}
+                item={comic}
+                isFavorite={favoriteComics.some((fav) => fav._id === comic._id)}
+                toggleFavorite={toggleFavorite}
+              />
             ))}
           </div>
+        ) : (
+          <p>Aucun comic trouvé pour ce personnage.</p>
         )}
       </div>
 

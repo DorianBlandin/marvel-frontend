@@ -41,7 +41,12 @@ function App() {
           path="/favorites"
           element={<Favorites userToken={userToken} />}
         />
-        <Route path="/character/:characterId" element={<CharacterDetail />} />
+        <Route
+          path="/character/:characterId"
+          element={
+            <CharacterDetail favoriteComics={[]} toggleFavorite={() => {}} />
+          }
+        />
         <Route path="/search" element={<SearchResults />} />{" "}
         <Route path="*" element={<h2>404 - Page non trouvée</h2>} />
         <Route path="/signup" element={<Signup setUser={setUserToken} />} />
