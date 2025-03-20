@@ -9,20 +9,41 @@ function Signup({ setUser }) {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
+  const handleSignup = async (event) => {
+    event.preventDefault();
     try {
       const response = await axios.post(
         "https://site--marvel--pj2lbzfpm8z4.code.run/signup",
         { email, username, password }
       );
-      setUserToken(response.data.token);
-      localStorage.setItem("token", response.data.token);
-      navigate("/");
+
+      if (response.data.token) {
+        if (typeof setUser === "function") {
+          setUser(response.data.token);
+        } else {
+          console.error("⚠️ `setUser` n'est pas une fonction !");
+        }
+
+        localStorage.setItem("userToken", response.data.token);
+
+        setErrorMessage("");
+
+        navigate("/");
+      }
     } catch (error) {
-      setErrorMessage(
-        "Erreur lors de l'inscription. Vérifie tes informations."
-      );
+      console.error("❌ Erreur lors de l'inscription :", error);
+
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage(
+          "Erreur lors de l'inscription. Vérifie tes informations."
+        );
+      }
     }
   };
 
@@ -34,21 +55,30 @@ function Signup({ setUser }) {
           type="text"
           placeholder="Nom d'utilisateur"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => {
+            setUsername(e.target.value);
+            setErrorMessage("");
+          }}
           required
         />
         <input
           type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setErrorMessage("");
+          }}
           required
         />
         <input
           type="password"
           placeholder="Mot de passe"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setErrorMessage("");
+          }}
           required
         />
         <button type="submit">S'inscrire</button>

@@ -14,7 +14,7 @@ import "./App.css";
 
 function App() {
   const [userToken, setUserToken] = useState(
-    localStorage.getItem("token") || null
+    localStorage.getItem("userToken") || null
   );
   const handleLogin = (token) => {
     setUserToken(token);
@@ -23,7 +23,7 @@ function App() {
 
   const handleLogout = () => {
     setUserToken(null);
-    localStorage.removeItem("token");
+    localStorage.removeItem("userToken");
   };
   return (
     <Router>
@@ -36,8 +36,8 @@ function App() {
         <Route path="/character/:characterId" element={<CharacterDetail />} />
         <Route path="/search" element={<SearchResults />} />{" "}
         <Route path="*" element={<h2>404 - Page non trouvée</h2>} />
-        <Route path="/signup" element={<Signup setUserToken={handleLogin} />} />
-        <Route path="/login" element={<Login setUserToken={handleLogin} />} />
+        <Route path="/signup" element={<Signup setUser={setUserToken} />} />
+        <Route path="/login" element={<Login setUser={setUserToken} />} />
         <Route path="/" element={<Home />} />
       </Routes>
       <Footer />

@@ -8,17 +8,25 @@ function Login({ setUser }) {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (event) => {
+    event.preventDefault();
     try {
       const response = await axios.post(
         "https://site--marvel--pj2lbzfpm8z4.code.run/login",
         { email, password }
       );
-      setUserToken(response.data.token);
-      localStorage.setItem("token", response.data.token);
-      navigate("/");
+
+      if (response.data.token) {
+        setUser(response.data.token);
+
+        localStorage.setItem("userToken", response.data.token);
+
+        navigate("/");
+      } else {
+        setErrorMessage("Email ou mot de passe incorrect.");
+      }
     } catch (error) {
+      console.error("❌ Erreur lors de la connexion :", error.response);
       setErrorMessage("Email ou mot de passe incorrect.");
     }
   };
