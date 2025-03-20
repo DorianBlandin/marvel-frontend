@@ -16,7 +16,7 @@ function Signup({ setUser }) {
         "https://site--marvel--pj2lbzfpm8z4.code.run/signup",
         { email, username, password }
       );
-      setUser(response.data.token);
+      setUserToken(response.data.token);
       localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (error) {

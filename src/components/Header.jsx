@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
 
-function Header({ userToken, setUser }) {
+function Header({ userToken, onLogout }) {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,8 +38,8 @@ function Header({ userToken, setUser }) {
 
         <div className="auth-buttons">
           {userToken ? (
-            <button className="connection-btn" onClick={() => setUser(null)}>
-              Se déconnecter
+            <button onClick={onLogout} className="nav-btn logout-btn">
+              Se Déconnecter
             </button>
           ) : (
             <>

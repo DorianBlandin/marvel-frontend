@@ -16,22 +16,18 @@ function App() {
   const [userToken, setUserToken] = useState(
     localStorage.getItem("token") || null
   );
-  useEffect(() => {
-    localStorage.setItem("token", userToken);
-  }, [userToken]);
+  const handleLogin = (token) => {
+    setUserToken(token);
+    localStorage.setItem("token", token);
+  };
 
-  const setUser = (token) => {
-    if (token) {
-      setUserToken(token);
-      localStorage.setItem("token", token);
-    } else {
-      setUserToken(null);
-      localStorage.removeItem("token");
-    }
+  const handleLogout = () => {
+    setUserToken(null);
+    localStorage.removeItem("token");
   };
   return (
     <Router>
-      <Header userToken={userToken} setUser={setUser} />
+      <Header userToken={userToken} onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/characters" element={<Characters />} />
@@ -40,8 +36,8 @@ function App() {
         <Route path="/character/:characterId" element={<CharacterDetail />} />
         <Route path="/search" element={<SearchResults />} />{" "}
         <Route path="*" element={<h2>404 - Page non trouvée</h2>} />
-        <Route path="/signup" element={<Signup setUser={setUser} />} />
-        <Route path="/login" element={<Login setUser={setUser} />} />
+        <Route path="/signup" element={<Signup setUserToken={handleLogin} />} />
+        <Route path="/login" element={<Login setUserToken={handleLogin} />} />
         <Route path="/" element={<Home />} />
       </Routes>
       <Footer />
