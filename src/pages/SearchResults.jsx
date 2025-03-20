@@ -40,7 +40,6 @@ function SearchResults() {
         <p>Chargement...</p>
       ) : (
         <div className="results-grid">
-          {/* ✅ Colonne personnages */}
           <div className="results-column">
             <h3>Personnages</h3>
             {characters.length === 0 ? (
@@ -60,7 +59,6 @@ function SearchResults() {
             )}
           </div>
 
-          {/* ✅ Colonne comics */}
           <div className="results-column">
             <h3>Comics</h3>
             {comics.length === 0 ? (

@@ -33,7 +33,6 @@ function Comics() {
     fetchComics();
   }, [page, search]);
 
-  // Fonction pour ajouter/enlever des favoris
   const toggleFavorite = (comic) => {
     let newFavorites;
     if (favoriteComics.some((fav) => fav._id === comic._id)) {

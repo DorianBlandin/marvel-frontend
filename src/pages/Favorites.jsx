@@ -47,7 +47,6 @@ function Favorites({ userToken }) {
 
   return userToken ? (
     <div>
-      {/* Barre de recherche */}
       <div className="local-search-container">
         <div className="local-search">
           <FontAwesomeIcon icon={faSuperpowers} className="local-search-icon" />
@@ -60,9 +59,7 @@ function Favorites({ userToken }) {
         </div>
       </div>
 
-      {/* Conteneur principal */}
       <div className="favorites-container">
-        {/* Ligne Personnages */}
         <h3>Personnages favoris</h3>
         <div className="horizontal-scroll">
           {favoriteCharacters.length === 0 ? (

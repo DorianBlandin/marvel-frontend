@@ -60,11 +60,7 @@ function CharacterDetail() {
       />
       <p>{character.description || "Pas de description disponible."}</p>
 
-      <button className="favorite-btn" onClick={toggleFavorite}>
-        {favorites.some((fav) => fav._id === character._id)
-          ? "💔 Retirer des favoris"
-          : "❤️ Ajouter aux favoris"}
-      </button>
+      <button className="favorite-btn" onClick={toggleFavorite}></button>
       <div className="comics-found">
         <h3>Présent·e·s dans :</h3>
         {comics.length === 0 ? (
@@ -84,7 +80,6 @@ function CharacterDetail() {
         )}
       </div>
 
-      {/* ✅ Lien retour vers personnages */}
       <Link to="/characters" className="back-btn">
         ← Retour à la liste des personnages
       </Link>

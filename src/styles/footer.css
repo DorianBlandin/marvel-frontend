@@ -1,0 +1,17 @@
+.footer {
+  background-color: #202020;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 14px;
+  margin-top: auto;
+  width: 100%;
+}
+
+.footer p:nth-child(1) {
+  padding-top: 7px;
+}
+
+.footer p:nth-of-type(2) {
+  color: #202020;
+}

@@ -38,7 +38,6 @@ function Characters() {
     fetchCharacters();
   }, [page, search]);
 
-  // Fonction pour ajouter/enlever des favoris
   const toggleFavorite = (char) => {
     let newFavorites;
     if (favoriteCharacters.some((fav) => fav._id === char._id)) {

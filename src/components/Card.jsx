@@ -4,7 +4,6 @@ import { FaHeart } from "react-icons/fa";
 function Card({ item, isFavorite, toggleFavorite }) {
   return (
     <div className="card">
-      {/* Si c'est un personnage, on met un Link, sinon juste une image */}
       {item.name ? (
         <Link to={`/character/${item._id}`}>
           <img
@@ -23,7 +22,6 @@ function Card({ item, isFavorite, toggleFavorite }) {
         </>
       )}
 
-      {/* Bouton favoris */}
       <button className="favorite-btn" onClick={() => toggleFavorite(item)}>
         <FaHeart color={isFavorite ? "red" : "black"} />
       </button>

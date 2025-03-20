@@ -1,0 +1,41 @@
+.local-search-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.local-search {
+  display: flex;
+  align-items: center;
+  background-color: #202020;
+  padding: 0px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 400px;
+}
+
+.local-search input {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background-color: #202020;
+  color: white;
+}
+
+.results-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.results-column h3 {
+  color: #e62429;
+}
+
+.results-column .card {
+  margin: 10px auto;
+}

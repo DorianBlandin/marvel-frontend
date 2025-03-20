@@ -1,0 +1,68 @@
+.character-detail-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.character-image {
+  max-width: 200px;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+.back-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  text-decoration: none;
+  background-color: #e62429;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out;
+}
+
+.back-btn:hover {
+  background-color: #c51d24;
+}
+
+.character-detail-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.character-detail-container h2 {
+  font-size: 30px;
+  border: gray solid 2px;
+  border-radius: 20px;
+  padding: 5px 15px;
+  display: inline-block;
+}
+
+.character-detail-container p {
+  margin-bottom: 15px;
+  max-width: 1220px;
+}
+
+.character-detail-container h3 {
+  margin-top: 15px;
+  font-size: 20px;
+}
+
+.comics-found {
+  background-color: #202020;
+  border-radius: 10px;
+}
+
+.comics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  justify-items: start;
+  background-color: #202020;
+  border-radius: 10px;
+}
