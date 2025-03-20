@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Characters from "./pages/Characters";
 import Comics from "./pages/Comics";
 import Favorites from "./pages/Favorites";
@@ -32,7 +37,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/characters" element={<Characters />} />
         <Route path="/comics" element={<Comics />} />
-        <Route path="/favorites" element={<Favorites />} />
+        <Route
+          path="/favorites"
+          element={<Favorites userToken={userToken} />}
+        />
         <Route path="/character/:characterId" element={<CharacterDetail />} />
         <Route path="/search" element={<SearchResults />} />{" "}
         <Route path="*" element={<h2>404 - Page non trouvée</h2>} />

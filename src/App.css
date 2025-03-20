@@ -1,3 +1,18 @@
+* {
+  font-family: "Roboto Condensed", sans-serif;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+p,
+a,
+button,
+input {
+  font-family: "Roboto Condensed", sans-serif !important;
+}
+
 html,
 body {
   height: 100%;
@@ -14,7 +29,6 @@ body {
 }
 
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #000000;
@@ -210,10 +224,6 @@ nav {
   margin: auto;
 }
 
-.favorite-btn:hover {
-  background-color: #c51d24;
-}
-
 .card {
   background-color: white;
   padding: 10px;
@@ -234,14 +244,30 @@ nav {
 .card img {
   width: 100%;
   max-width: 150px;
-  height: auto;
+  height: 180px; /* Taille fixe pour éviter les cartes de hauteurs différentes */
   border-radius: 5px;
+  object-fit: cover; /* Ajuste l’image pour garder une taille uniforme */
 }
 
 .card p {
   font-size: 14px;
   margin-top: 5px;
   font-weight: bold;
+  white-space: normal; /* Permet le retour à la ligne */
+  word-wrap: break-word; /* Coupe les mots longs si nécessaire */
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  color: #000000;
+}
+
+.card a {
+  text-decoration: none; /* Supprime le soulignement */
+  color: inherit; /* Garde la couleur de base du texte */
+}
+
+.card a:hover {
+  text-decoration: none; /* Assure qu'il ne réapparaît pas au survol */
 }
 
 .pagination {
@@ -294,8 +320,19 @@ nav {
   }
 
   .card {
-    width: 100%;
-    max-width: 200px;
+    position: relative;
+    flex: 0 0 180px;
+    height: 260px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .home-buttons {
@@ -327,11 +364,6 @@ nav {
 
 .results-column .card {
   margin: 10px auto;
-}
-
-.favorites-container {
-  text-align: center;
-  padding: 20px;
 }
 
 .results-grid {
@@ -366,21 +398,24 @@ nav {
 }
 
 .favorite-btn {
-  background-color: transparent;
-  color: rgb(255, 0, 0);
+  position: absolute; /* On s’assure qu’il est bien placé */
+  bottom: 10px;
+  right: 10px;
+  background: transparent;
   border: none;
-  padding: 5px;
-  margin-top: 10px;
-  border-radius: 5px;
   cursor: pointer;
-  font-size: 10px;
-  transition: background 0.3s;
-  margin-bottom: 10px;
+  font-size: 18px;
 }
 
-.favorite-btn:hover {
-  background-color: #c51d24;
-  color: white;
+.favorite-btn .empty-heart {
+  color: #c51d24;
+  font-size: 22px;
+}
+
+/* Icône cœur plein */
+.favorite-btn .filled-heart {
+  color: red;
+  font-size: 22px;
 }
 
 .comics-grid {
@@ -533,4 +568,75 @@ nav {
 .error {
   color: red;
   font-size: 14px;
+}
+
+.favorites-container {
+  padding: 20px;
+}
+
+.favorites-container h3 {
+  font-size: 20px;
+}
+
+.favorites-container .favorite-btn {
+  position: relative;
+  bottom: auto;
+  right: auto;
+}
+
+.horizontal-scroll {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px 0;
+}
+
+.scroll-container {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  white-space: nowrap;
+}
+
+.scroll-container .card {
+  flex: 0 0 auto;
+  width: 180px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scroll-container .card:hover {
+  transform: scale(1.05);
+}
+
+.scroll-container img {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  border-radius: 5px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  width: 100%;
+  white-space: normal; /* Permet le retour à la ligne */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  padding: 5px;
+}
+
+.scroll-container p {
+  font-size: 14px;
+  margin-top: 5px;
+  font-weight: bold;
 }

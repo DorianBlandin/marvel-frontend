@@ -1,22 +1,19 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
+import { FaHeart } from "react-icons/fa";
+import Card from "../components/Card";
 
 function Characters() {
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [localSearch, setLocalSearch] = useState("");
-  const [favorites, setFavorites] = useState(
+  const [search, setSearch] = useState("");
+  const [favoriteCharacters, setFavoriteCharacters] = useState(
     JSON.parse(localStorage.getItem("favoriteCharacters")) || []
   );
-
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const globalSearch = queryParams.get("search") || "";
 
   useEffect(() => {
     const fetchCharacters = async () => {
@@ -25,11 +22,7 @@ function Characters() {
         const response = await axios.get(
           "https://site--marvel--pj2lbzfpm8z4.code.run/characters",
           {
-            params: {
-              limit: 100,
-              skip: (page - 1) * 100,
-              name: globalSearch || localSearch,
-            },
+            params: { limit: 100, skip: (page - 1) * 100, name: search },
           }
         );
         setCharacters(response.data.results);
@@ -43,20 +36,18 @@ function Characters() {
     };
 
     fetchCharacters();
-  }, [page, localSearch, globalSearch]);
+  }, [page, search]);
 
-  const toggleFavorite = (character) => {
-    let updatedFavorites;
-    if (favorites.some((fav) => fav._id === character._id)) {
-      updatedFavorites = favorites.filter((fav) => fav._id !== character._id);
+  // Fonction pour ajouter/enlever des favoris
+  const toggleFavorite = (char) => {
+    let newFavorites;
+    if (favoriteCharacters.some((fav) => fav._id === char._id)) {
+      newFavorites = favoriteCharacters.filter((fav) => fav._id !== char._id);
     } else {
-      updatedFavorites = [...favorites, character];
+      newFavorites = [...favoriteCharacters, char];
     }
-    setFavorites(updatedFavorites);
-    localStorage.setItem(
-      "favoriteCharacters",
-      JSON.stringify(updatedFavorites)
-    );
+    setFavoriteCharacters(newFavorites);
+    localStorage.setItem("favoriteCharacters", JSON.stringify(newFavorites));
   };
 
   return (
@@ -67,8 +58,8 @@ function Characters() {
           <input
             type="text"
             placeholder="Rechercher un personnage..."
-            value={localSearch}
-            onChange={(e) => setLocalSearch(e.target.value)}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
       </div>
@@ -78,23 +69,14 @@ function Characters() {
       ) : (
         <div className="grid-container">
           {characters.map((char) => (
-            <div key={char._id} className="card">
-              <Link to={`/character/${char._id}`}>
-                <img
-                  src={`${char.thumbnail.path}/portrait_xlarge.${char.thumbnail.extension}`}
-                  alt={char.name}
-                />
-                <p>{char.name}</p>
-              </Link>
-              <button
-                className="favorite-btn"
-                onClick={() => toggleFavorite(char)}
-              >
-                {favorites.some((fav) => fav._id === char._id)
-                  ? "💔 Retirer"
-                  : "❤️ Ajouter"}
-              </button>
-            </div>
+            <Card
+              key={char._id}
+              item={char}
+              isFavorite={favoriteCharacters.some(
+                (fav) => fav._id === char._id
+              )}
+              toggleFavorite={toggleFavorite}
+            />
           ))}
         </div>
       )}

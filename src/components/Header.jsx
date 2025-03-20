@@ -38,7 +38,7 @@ function Header({ userToken, onLogout }) {
 
         <div className="auth-buttons">
           {userToken ? (
-            <button onClick={onLogout} className="nav-btn logout-btn">
+            <button onClick={onLogout} className="connection-btn">
               Se Déconnecter
             </button>
           ) : (

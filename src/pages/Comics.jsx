@@ -1,22 +1,17 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
+import Card from "../components/Card";
 
 function Comics() {
   const [comics, setComics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [localSearch, setLocalSearch] = useState("");
-  const [favorites, setFavorites] = useState(
+  const [search, setSearch] = useState("");
+  const [favoriteComics, setFavoriteComics] = useState(
     JSON.parse(localStorage.getItem("favoriteComics")) || []
   );
-
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const globalSearch = queryParams.get("search") || "";
 
   useEffect(() => {
     const fetchComics = async () => {
@@ -25,11 +20,7 @@ function Comics() {
         const response = await axios.get(
           "https://site--marvel--pj2lbzfpm8z4.code.run/comics",
           {
-            params: {
-              limit: 100,
-              skip: (page - 1) * 100,
-              title: globalSearch || localSearch,
-            },
+            params: { limit: 100, skip: (page - 1) * 100, title: search },
           }
         );
         setComics(response.data.results);
@@ -40,17 +31,18 @@ function Comics() {
     };
 
     fetchComics();
-  }, [page, localSearch, globalSearch]);
+  }, [page, search]);
 
+  // Fonction pour ajouter/enlever des favoris
   const toggleFavorite = (comic) => {
-    let updatedFavorites;
-    if (favorites.some((fav) => fav._id === comic._id)) {
-      updatedFavorites = favorites.filter((fav) => fav._id !== comic._id);
+    let newFavorites;
+    if (favoriteComics.some((fav) => fav._id === comic._id)) {
+      newFavorites = favoriteComics.filter((fav) => fav._id !== comic._id);
     } else {
-      updatedFavorites = [...favorites, comic];
+      newFavorites = [...favoriteComics, comic];
     }
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favoriteComics", JSON.stringify(updatedFavorites));
+    setFavoriteComics(newFavorites);
+    localStorage.setItem("favoriteComics", JSON.stringify(newFavorites));
   };
 
   return (
@@ -61,8 +53,8 @@ function Comics() {
           <input
             type="text"
             placeholder="Rechercher un comic..."
-            value={localSearch}
-            onChange={(e) => setLocalSearch(e.target.value)}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
       </div>
@@ -72,21 +64,12 @@ function Comics() {
       ) : (
         <div className="grid-container">
           {comics.map((comic) => (
-            <div key={comic._id} className="comic-card">
-              <img
-                src={`${comic.thumbnail.path}/portrait_xlarge.${comic.thumbnail.extension}`}
-                alt={comic.title}
-              />
-              <p>{comic.title}</p>
-              <button
-                className="favorite-btn"
-                onClick={() => toggleFavorite(comic)}
-              >
-                {favorites.some((fav) => fav._id === comic._id)
-                  ? "💔 Retirer"
-                  : "❤️ Ajouter"}
-              </button>
-            </div>
+            <Card
+              key={comic._id}
+              item={comic}
+              isFavorite={favoriteComics.some((fav) => fav._id === comic._id)}
+              toggleFavorite={toggleFavorite}
+            />
           ))}
         </div>
       )}
