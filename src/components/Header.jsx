@@ -89,7 +89,7 @@ function Header({ userToken, onLogout }) {
   };
 
   return (
-    <header className="header">
+    <header>
       <div className="higher-header">
         <div className="logo-container">
           <Link to="/">
