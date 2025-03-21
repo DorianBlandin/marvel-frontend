@@ -184,7 +184,7 @@ nav {
 
   .auth-buttons {
     flex-direction: column;
-    width: 100%;
+    width: 120%;
     align-items: center;
   }
 
