@@ -7,6 +7,11 @@
   font-size: 20px;
 }
 
+.favorites-container p {
+  margin-bottom: 3%;
+  margin-top: 1%;
+}
+
 .favorite-btn {
   position: absolute;
   bottom: 0px;

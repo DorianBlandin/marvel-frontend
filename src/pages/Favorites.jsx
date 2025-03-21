@@ -99,7 +99,7 @@ function Favorites({ userToken }) {
         <h3>Personnages favoris</h3>
         <div className="horizontal-scroll">
           {favoriteCharacters.length === 0 ? (
-            <p>Aucun personnage en favori.</p>
+            <p>Aucun personnage en favori 😱</p>
           ) : (
             <div className="scroll-container">
               {favoriteCharacters.map((char) => (
@@ -118,7 +118,7 @@ function Favorites({ userToken }) {
         <h3>Comics favoris</h3>
         <div className="horizontal-scroll">
           {favoriteComics.length === 0 ? (
-            <p>Aucun comic en favori.</p>
+            <p>Aucun comic en favori 😭</p>
           ) : (
             <div className="scroll-container">
               {favoriteComics.map((comic) => (
