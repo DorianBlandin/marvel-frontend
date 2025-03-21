@@ -61,7 +61,7 @@ function Characters() {
   };
 
   return (
-    <div>
+    <div className="characters-background">
       <div className="local-search-container">
         <div className="local-search">
           <FontAwesomeIcon icon={faSuperpowers} className="local-search-icon" />

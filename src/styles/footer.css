@@ -6,6 +6,9 @@
   font-size: 14px;
   margin-top: auto;
   width: 100%;
+  z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .footer p:nth-child(1) {
