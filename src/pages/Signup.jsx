@@ -52,16 +52,6 @@ function Signup({ setUser }) {
       <h2>Inscription</h2>
       <form onSubmit={handleSignup}>
         <input
-          type="text"
-          placeholder="Nom d'utilisateur"
-          value={username}
-          onChange={(e) => {
-            setUsername(e.target.value);
-            setErrorMessage("");
-          }}
-          required
-        />
-        <input
           type="email"
           placeholder="Email"
           value={email}
