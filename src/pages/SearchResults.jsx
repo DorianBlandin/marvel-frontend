@@ -39,9 +39,9 @@ function SearchResults() {
       {loading ? (
         <p>Chargement...</p>
       ) : (
-        <div className="results-grid">
-          <div className="results-column">
-            <h3>Personnages</h3>
+        <div className="horizontal-scroll">
+          <h3>Personnages</h3>
+          <div className="scroll-container">
             {characters.length === 0 ? (
               <p>Aucun personnage trouvé.</p>
             ) : (
@@ -58,9 +58,8 @@ function SearchResults() {
               ))
             )}
           </div>
-
-          <div className="results-column">
-            <h3>Comics</h3>
+          <h3>Comics</h3>
+          <div className="scroll-container">
             {comics.length === 0 ? (
               <p>Aucun comic trouvé.</p>
             ) : (

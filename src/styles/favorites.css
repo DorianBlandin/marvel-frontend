@@ -21,9 +21,10 @@
   display: flex;
   gap: 15px;
   overflow-x: auto;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   padding-top: 10px;
   white-space: nowrap;
+  margin-bottom: 20px;
 }
 
 .scroll-container .card {

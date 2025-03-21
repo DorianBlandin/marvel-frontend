@@ -1,56 +1,55 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "/marvel-logo.png";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
 import axios from "axios";
 
 function Header({ userToken, onLogout }) {
-  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
-  const [suggestions, setSuggestions] = useState([]);
-  const [search, setSearch] = useState("");
+  const [headerSearchQuery, setHeaderSearchQuery] = useState("");
+  const [headerSuggestions, setHeaderSuggestions] = useState([]);
+  const headerSearchRef = useRef();
 
-  const handleSearch = (e) => {
+  const handleHeaderSearchSubmit = (e) => {
     e.preventDefault();
-    if (search.trim() !== "") {
-      navigate(`/search?query=${search}`);
-      setSuggestions([]);
+    if (headerSearchQuery.trim()) {
+      navigate(`/search?query=${headerSearchQuery}`);
+      setHeaderSuggestions([]);
     }
   };
 
   useEffect(() => {
-    const fetchSuggestions = async () => {
-      if (search.length > 1) {
+    const fetchHeaderSuggestions = async () => {
+      if (headerSearchQuery.length > 1) {
         try {
-          const [charResponse, comicResponse] = await Promise.all([
+          const [charRes, comicRes] = await Promise.all([
             axios.get(
               "https://site--marvel--pj2lbzfpm8z4.code.run/characters",
               {
-                params: { limit: 5, name: search },
+                params: { limit: 5, name: headerSearchQuery },
               }
             ),
             axios.get("https://site--marvel--pj2lbzfpm8z4.code.run/comics", {
-              params: { limit: 5, title: search },
+              params: { limit: 5, title: headerSearchQuery },
             }),
           ]);
 
-          const charSuggestions = charResponse.data.results.map((char) => ({
-            id: char._id,
-            name: char.name,
+          const characters = charRes.data.results.map((c) => ({
+            id: c._id,
+            name: c.name,
             type: "character",
-            thumbnail: char.thumbnail,
+            thumbnail: c.thumbnail,
           }));
 
-          const comicSuggestions = comicResponse.data.results.map((comic) => ({
-            id: comic._id,
-            name: comic.title,
+          const comics = comicRes.data.results.map((c) => ({
+            id: c._id,
+            name: c.title,
             type: "comic",
-            thumbnail: comic.thumbnail,
+            thumbnail: c.thumbnail,
           }));
 
-          setSuggestions([...charSuggestions, ...comicSuggestions]);
+          setHeaderSuggestions([...characters, ...comics]);
         } catch (error) {
           console.error(
             "Erreur lors de la récupération des suggestions :",
@@ -58,21 +57,35 @@ function Header({ userToken, onLogout }) {
           );
         }
       } else {
-        setSuggestions([]);
+        setHeaderSuggestions([]);
       }
     };
 
-    fetchSuggestions();
-  }, [search]);
+    fetchHeaderSuggestions();
+  }, [headerSearchQuery]);
 
-  const handleSearchSelect = (suggestion) => {
-    if (suggestion.type === "character") {
-      navigate(`/character/${suggestion.id}`);
-    } else if (suggestion.type === "comic") {
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        headerSearchRef.current &&
+        !headerSearchRef.current.contains(e.target)
+      ) {
+        setHeaderSuggestions([]);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSuggestionSelect = (item) => {
+    if (item.type === "character") {
+      navigate(`/character/${item.id}`);
+    } else {
       navigate(`/comics`);
     }
-    setSearch("");
-    setSuggestions([]);
+    setHeaderSearchQuery("");
+    setHeaderSuggestions([]);
+    document.activeElement.blur();
   };
 
   return (
@@ -84,29 +97,32 @@ function Header({ userToken, onLogout }) {
           </Link>
         </div>
 
-        <form className="search-container" onSubmit={handleSearch}>
+        <form
+          ref={headerSearchRef}
+          className="search-container"
+          onSubmit={handleHeaderSearchSubmit}
+        >
           <FontAwesomeIcon icon={faSuperpowers} className="search-icon" />
           <input
             type="text"
             placeholder="Rechercher un personnage ou un comic..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={headerSearchQuery}
+            onChange={(e) => setHeaderSearchQuery(e.target.value)}
             className="search-bar"
+            name="header-search"
+            autoComplete="off"
           />
-          {suggestions.length > 0 && (
+          {headerSuggestions.length > 0 && (
             <ul className="suggestions-list">
-              {suggestions.map((suggestion) => (
-                <li
-                  key={suggestion.id}
-                  onClick={() => handleSearchSelect(suggestion)}
-                >
+              {headerSuggestions.map((s) => (
+                <li key={s.id} onClick={() => handleSuggestionSelect(s)}>
                   <img
-                    src={`${suggestion.thumbnail.path}/portrait_xlarge.${suggestion.thumbnail.extension}`}
-                    alt={suggestion.name}
+                    src={`${s.thumbnail.path}/portrait_xlarge.${s.thumbnail.extension}`}
+                    alt={s.name}
                   />
-                  {suggestion.name}{" "}
+                  {s.name}{" "}
                   <span className="suggestion-type">
-                    ({suggestion.type === "character" ? "Personnage" : "Comic"})
+                    ({s.type === "character" ? "Personnage" : "Comic"})
                   </span>
                 </li>
               ))}

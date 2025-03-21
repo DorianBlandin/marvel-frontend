@@ -3,18 +3,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
-import { FaHeart } from "react-icons/fa";
 import Card from "../components/Card";
 
 function Characters() {
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [favoriteCharacters, setFavoriteCharacters] = useState(
-    JSON.parse(localStorage.getItem("favoriteCharacters")) || []
-  );
-  const [suggestions, setSuggestions] = useState([]);
+  const [charSearch, setCharSearch] = useState("");
+  const [charSuggestions, setCharSuggestions] = useState([]);
 
   useEffect(() => {
     const fetchCharacters = async () => {
@@ -23,7 +19,7 @@ function Characters() {
         const response = await axios.get(
           "https://site--marvel--pj2lbzfpm8z4.code.run/characters",
           {
-            params: { limit: 100, skip: (page - 1) * 100, name: search },
+            params: { limit: 100, skip: (page - 1) * 100, name: charSearch },
           }
         );
         setCharacters(response.data.results);
@@ -37,28 +33,31 @@ function Characters() {
     };
 
     fetchCharacters();
-  }, [page, search]);
+  }, [page, charSearch]);
 
   useEffect(() => {
-    if (search.length > 1) {
-      const filteredSuggestions = characters.filter((char) =>
-        char.name.toLowerCase().includes(search.toLowerCase())
-      );
-      setSuggestions(filteredSuggestions);
-    } else {
-      setSuggestions([]);
-    }
-  }, [search, characters]);
+    const fetchCharSuggestions = async () => {
+      if (charSearch.length > 1) {
+        try {
+          const response = await axios.get(
+            "https://site--marvel--pj2lbzfpm8z4.code.run/characters",
+            { params: { limit: 5, name: charSearch } }
+          );
+          setCharSuggestions(response.data.results);
+        } catch (error) {
+          console.error("Erreur suggestions personnages :", error);
+        }
+      } else {
+        setCharSuggestions([]);
+      }
+    };
 
-  const toggleFavorite = (char) => {
-    let newFavorites;
-    if (favoriteCharacters.some((fav) => fav._id === char._id)) {
-      newFavorites = favoriteCharacters.filter((fav) => fav._id !== char._id);
-    } else {
-      newFavorites = [...favoriteCharacters, char];
-    }
-    setFavoriteCharacters(newFavorites);
-    localStorage.setItem("favoriteCharacters", JSON.stringify(newFavorites));
+    fetchCharSuggestions();
+  }, [charSearch]);
+
+  const handleSuggestionClick = (name) => {
+    setCharSearch(name);
+    setCharSuggestions([]);
   };
 
   return (
@@ -69,14 +68,22 @@ function Characters() {
           <input
             type="text"
             placeholder="Rechercher un personnage..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={charSearch}
+            onChange={(e) => setCharSearch(e.target.value)}
+            autoComplete="off"
           />
         </div>
-        {suggestions.length > 0 && (
+        {charSuggestions.length > 0 && (
           <ul className="suggestions-list">
-            {suggestions.map((char) => (
-              <li key={char._id} onClick={() => setSearch(char.name)}>
+            {charSuggestions.map((char) => (
+              <li
+                key={char._id}
+                onClick={() => handleSuggestionClick(char.name)}
+              >
+                <img
+                  src={`${char.thumbnail.path}/portrait_xlarge.${char.thumbnail.extension}`}
+                  alt={char.name}
+                />
                 {char.name}
               </li>
             ))}
@@ -89,14 +96,7 @@ function Characters() {
       ) : (
         <div className="grid-container">
           {characters.map((char) => (
-            <Card
-              key={char._id}
-              item={char}
-              isFavorite={favoriteCharacters.some(
-                (fav) => fav._id === char._id
-              )}
-              toggleFavorite={toggleFavorite}
-            />
+            <Card key={char._id} item={char} />
           ))}
         </div>
       )}
