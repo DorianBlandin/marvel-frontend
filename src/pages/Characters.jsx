@@ -55,7 +55,7 @@ function Characters({ userToken }) {
   const toggleFavorite = async (char) => {
     try {
       const isFavorite = favoriteCharacters.some((fav) => fav._id === char._id);
-      const route = isFavorite ? "remove" : "add";
+      const route = isFavorite ? "remove" : "";
 
       const response = await axios.post(
         `https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites/${route}`,
