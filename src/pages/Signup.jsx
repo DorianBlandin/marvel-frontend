@@ -47,32 +47,34 @@ function Signup({ setUser }) {
   };
 
   return (
-    <div className="auth-container">
-      <h2>Inscription</h2>
-      <form onSubmit={handleSignup}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            setErrorMessage("");
-          }}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setErrorMessage("");
-          }}
-          required
-        />
-        <button type="submit">S'inscrire</button>
-      </form>
-      {errorMessage && <p className="error">{errorMessage}</p>}
+    <div className="auth-page">
+      <div className="auth-container">
+        <h2>Inscription</h2>
+        <form onSubmit={handleSignup}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setErrorMessage("");
+            }}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Mot de passe"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrorMessage("");
+            }}
+            required
+          />
+          <button type="submit">S'inscrire</button>
+        </form>
+        {errorMessage && <p className="error">{errorMessage}</p>}
+      </div>
     </div>
   );
 }

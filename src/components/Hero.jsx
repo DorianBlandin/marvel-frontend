@@ -10,13 +10,13 @@ const Hero = () => {
       </p>
       <div className="hero-buttons-container">
         <Link to="/characters" className="hero-buttons">
-          Voir les Personnages
+          Ils sont trop forts !
         </Link>
         <Link to="/comics" className="hero-buttons">
-          Explorer les Comics
+          La bibliothèque
         </Link>
         <Link to="/favorites" className="hero-buttons">
-          Mes Favoris
+          Je les aime
         </Link>
       </div>
     </div>

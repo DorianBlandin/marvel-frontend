@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
 import Card from "../components/Card";
+import axios from "axios";
 
 function Favorites({ userToken }) {
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
@@ -17,32 +18,67 @@ function Favorites({ userToken }) {
   }, [userToken, navigate]);
 
   useEffect(() => {
-    setFavoriteCharacters(
-      JSON.parse(localStorage.getItem("favoriteCharacters")) || []
-    );
-    setFavoriteComics(JSON.parse(localStorage.getItem("favoriteComics")) || []);
-  }, []);
+    const fetchFavorites = async () => {
+      try {
+        const response = await axios.get(
+          "https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites",
+          { params: { token: userToken } }
+        );
+        setFavoriteCharacters(response.data.favoriteCharacters || []);
+        setFavoriteComics(response.data.favoriteComics || []);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des favoris :", error);
+      }
+    };
 
-  const toggleFavoriteCharacter = (char) => {
-    let newFavorites;
-    if (favoriteCharacters.some((fav) => fav._id === char._id)) {
-      newFavorites = favoriteCharacters.filter((fav) => fav._id !== char._id);
-    } else {
-      newFavorites = [...favoriteCharacters, char];
+    if (userToken) {
+      fetchFavorites();
     }
-    setFavoriteCharacters(newFavorites);
-    localStorage.setItem("favoriteCharacters", JSON.stringify(newFavorites));
+  }, [userToken]);
+
+  const toggleFavoriteCharacter = async (char) => {
+    try {
+      const route = favoriteCharacters.some((fav) => fav._id === char._id)
+        ? "remove"
+        : "add";
+
+      const response = await axios.post(
+        `https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites/${route}`,
+        {
+          token: userToken,
+          item: char,
+          type: "character",
+        }
+      );
+
+      setFavoriteCharacters(response.data.favoriteCharacters || []);
+    } catch (error) {
+      console.error(
+        "Erreur lors de la mise à jour des favoris personnage :",
+        error
+      );
+    }
   };
 
-  const toggleFavoriteComic = (comic) => {
-    let newFavorites;
-    if (favoriteComics.some((fav) => fav._id === comic._id)) {
-      newFavorites = favoriteComics.filter((fav) => fav._id !== comic._id);
-    } else {
-      newFavorites = [...favoriteComics, comic];
+  const toggleFavoriteComic = async (comic) => {
+    try {
+      const route = favoriteComics.some((fav) => fav._id === comic._id)
+        ? "remove"
+        : "add";
+
+      const response = await axios.post(
+        `https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites/${route}`,
+        {
+          token: userToken,
+          item: comic,
+          type: "comic",
+        }
+      );
+
+      setFavoriteComics(response.data.favoriteComics || []);
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour des favoris comic :", error);
     }
-    setFavoriteComics(newFavorites);
-    localStorage.setItem("favoriteComics", JSON.stringify(newFavorites));
   };
 
   return userToken ? (
@@ -70,6 +106,7 @@ function Favorites({ userToken }) {
                 <Card
                   key={char._id}
                   item={char}
+                  type="character"
                   isFavorite={true}
                   toggleFavorite={toggleFavoriteCharacter}
                 />
@@ -88,6 +125,7 @@ function Favorites({ userToken }) {
                 <Card
                   key={comic._id}
                   item={comic}
+                  type="comic"
                   isFavorite={true}
                   toggleFavorite={toggleFavoriteComic}
                 />
