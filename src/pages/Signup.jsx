@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 function Signup({ setUser }) {
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
@@ -14,7 +13,7 @@ function Signup({ setUser }) {
     try {
       const response = await axios.post(
         "https://site--marvel--pj2lbzfpm8z4.code.run/signup",
-        { email, username, password }
+        { email, password }
       );
 
       if (response.data.token) {
