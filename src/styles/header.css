@@ -184,12 +184,12 @@ nav {
 
   .auth-buttons {
     flex-direction: column;
-    width: 120%;
+    width: 100%;
     align-items: center;
   }
 
   .connection-btn {
-    width: 30%;
+    width: 40%;
     text-align: center;
   }
 
