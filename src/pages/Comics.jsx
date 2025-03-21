@@ -12,6 +12,7 @@ function Comics() {
   const [favoriteComics, setFavoriteComics] = useState(
     JSON.parse(localStorage.getItem("favoriteComics")) || []
   );
+  const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
     const fetchComics = async () => {
@@ -32,6 +33,17 @@ function Comics() {
 
     fetchComics();
   }, [page, search]);
+
+  useEffect(() => {
+    if (search.length > 1) {
+      const filteredSuggestions = comics.filter((comic) =>
+        comic.title.toLowerCase().includes(search.toLowerCase())
+      );
+      setSuggestions(filteredSuggestions);
+    } else {
+      setSuggestions([]);
+    }
+  }, [search, comics]);
 
   const toggleFavorite = (comic) => {
     let newFavorites;
@@ -56,6 +68,15 @@ function Comics() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
+        {suggestions.length > 0 && (
+          <ul className="suggestions-list">
+            {suggestions.map((comic) => (
+              <li key={comic._id} onClick={() => setSearch(comic.title)}>
+                {comic.title}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {loading ? (

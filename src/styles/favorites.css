@@ -39,7 +39,9 @@
   flex-direction: column;
   align-items: center;
 }
-/* 📱 Responsive Favoris */
+
+/* ----------------------------------------------------RESPONSIVE------------------------------------------------------------ */
+
 @media (max-width: 768px) {
   .horizontal-scroll {
     overflow-x: auto;
@@ -52,7 +54,7 @@
   }
 
   .card {
-    width: 140px; /* Réduction de la largeur */
+    width: 140px;
   }
 
   .card img {
@@ -66,7 +68,6 @@
   }
 }
 
-/* 📱 Responsive Ultra Small Screens */
 @media (max-width: 480px) {
   .card {
     width: 120px;

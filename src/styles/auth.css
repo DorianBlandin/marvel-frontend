@@ -51,10 +51,12 @@
   color: #c51d24;
 }
 
+/* ----------------------------------------------------RESPONSIVE------------------------------------------------------------ */
+
 @media (max-width: 600px) {
   .auth-container {
-    width: 90%; /* Au lieu d'une largeur fixe */
-    max-width: 320px; /* Empêche qu'il devienne trop large */
+    width: 90%;
+    max-width: 320px;
     padding: 15px;
   }
 

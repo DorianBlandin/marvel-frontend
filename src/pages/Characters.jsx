@@ -14,6 +14,7 @@ function Characters() {
   const [favoriteCharacters, setFavoriteCharacters] = useState(
     JSON.parse(localStorage.getItem("favoriteCharacters")) || []
   );
+  const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
     const fetchCharacters = async () => {
@@ -38,6 +39,17 @@ function Characters() {
     fetchCharacters();
   }, [page, search]);
 
+  useEffect(() => {
+    if (search.length > 1) {
+      const filteredSuggestions = characters.filter((char) =>
+        char.name.toLowerCase().includes(search.toLowerCase())
+      );
+      setSuggestions(filteredSuggestions);
+    } else {
+      setSuggestions([]);
+    }
+  }, [search, characters]);
+
   const toggleFavorite = (char) => {
     let newFavorites;
     if (favoriteCharacters.some((fav) => fav._id === char._id)) {
@@ -61,6 +73,15 @@ function Characters() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
+        {suggestions.length > 0 && (
+          <ul className="suggestions-list">
+            {suggestions.map((char) => (
+              <li key={char._id} onClick={() => setSearch(char.name)}>
+                {char.name}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {loading ? (

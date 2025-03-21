@@ -97,6 +97,48 @@ nav {
   border-left: #ffffff solid 2px;
 }
 
+.suggestions-list {
+  position: absolute;
+  background-color: white;
+  color: black;
+  width: 100%;
+  max-width: 400px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  z-index: 10;
+  top: 45px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.suggestions-list li {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.suggestions-list li:hover {
+  background-color: #f0f0f0;
+}
+
+.suggestions-list img {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.suggestion-type {
+  font-size: 12px;
+  color: gray;
+  margin-left: 5px;
+}
+
 /* ----------------------------------------------------RESPONSIVE------------------------------------------------------------ */
 
 @media (max-width: 768px) {
