@@ -1,7 +1,6 @@
 .local-search-container {
   display: flex;
   justify-content: center;
-  margin: 20px auto;
 }
 
 .local-search {
@@ -34,53 +33,32 @@
   color: white;
 }
 
-.results-grid {
+.horizontal-scroll {
   display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 20px;
+  flex-direction: column;
+  padding-top: 1%;
+  padding-bottom: 1%;
 }
 
-.results-column h3 {
-  color: #e62429;
+.scroll-container {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 0.5%;
+  overflow-x: auto;
+  padding: 1% 0;
 }
 
-.results-column .card {
-  margin: 10px auto;
-}
-
-.search-results-container h3 {
-  margin-top: 10px;
+.horizontal-scroll h3 {
+  margin-top: 1%;
   color: #e62429;
   font-size: 20px;
-  padding-left: 1%;
+  padding-left: 0.5%;
 }
 
-.local-suggestions {
-  position: absolute;
-  background-color: white;
-  color: black;
-  z-index: 10;
-  max-height: 200px;
-  overflow-y: auto;
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 0 0 5px 5px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  top: 100%;
-  left: 0;
-}
-
-.local-search-container {
-  position: relative;
-}
-
-.suggestions-list li {
-  padding: 10px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.suggestions-list li:hover {
-  background-color: #f0f0f0;
+@media (max-width: 768px) {
+  .search-container,
+  .local-search {
+    max-width: 80%;
+  }
 }

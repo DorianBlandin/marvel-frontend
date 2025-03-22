@@ -1,17 +1,3 @@
-.favorites-container {
-  text-align: flex-start;
-  padding: 20px;
-}
-
-.favorites-container h3 {
-  font-size: 20px;
-}
-
-.favorites-container p {
-  margin-bottom: 3%;
-  margin-top: 1%;
-}
-
 .favorite-btn {
   position: absolute;
   bottom: 0px;
@@ -20,30 +6,6 @@
   border: none;
   cursor: pointer;
   font-size: 18px;
-}
-
-.scroll-container {
-  display: flex;
-  gap: 15px;
-  overflow-x: auto;
-  padding-bottom: 5px;
-  padding-top: 10px;
-  white-space: nowrap;
-  margin-bottom: 20px;
-}
-
-.scroll-container .card {
-  flex: 0 0 auto;
-  width: 180px;
-  background-color: white;
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 /* ----------------------------------------------------RESPONSIVE------------------------------------------------------------ */

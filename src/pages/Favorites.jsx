@@ -74,7 +74,7 @@ function Favorites({ userToken }) {
   };
 
   return userToken ? (
-    <div>
+    <main>
       <div className="local-search-container">
         <div className="local-search">
           <FontAwesomeIcon icon={faSuperpowers} className="local-search-icon" />
@@ -86,47 +86,44 @@ function Favorites({ userToken }) {
           />
         </div>
       </div>
-
-      <div className="favorites-container">
+      <div className="horizontal-scroll">
         <h3>Personnages favoris</h3>
-        <div className="horizontal-scroll">
-          {favoriteCharacters.length === 0 ? (
-            <p>Aucun personnage en favori 😱</p>
-          ) : (
-            <div className="scroll-container">
-              {favoriteCharacters.map((char) => (
-                <Card
-                  key={char._id}
-                  item={char}
-                  type="character"
-                  isFavorite={true}
-                  toggleFavorite={toggleFavoriteCharacter}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-
-        <h3>Comics favoris</h3>
-        <div className="horizontal-scroll">
-          {favoriteComics.length === 0 ? (
-            <p>Aucun comic en favori 😭</p>
-          ) : (
-            <div className="scroll-container">
-              {favoriteComics.map((comic) => (
-                <Card
-                  key={comic._id}
-                  item={comic}
-                  type="comic"
-                  isFavorite={true}
-                  toggleFavorite={toggleFavoriteComic}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        {favoriteCharacters.length === 0 ? (
+          <p>Aucun personnage en favori 😱</p>
+        ) : (
+          <div className="scroll-container">
+            {favoriteCharacters.map((char) => (
+              <Card
+                key={char._id}
+                item={char}
+                type="character"
+                isFavorite={true}
+                toggleFavorite={toggleFavoriteCharacter}
+              />
+            ))}
+          </div>
+        )}
       </div>
-    </div>
+
+      <div className="horizontal-scroll">
+        <h3>Comics favoris</h3>
+        {favoriteComics.length === 0 ? (
+          <p>Aucun comic en favori 😭</p>
+        ) : (
+          <div className="scroll-container">
+            {favoriteComics.map((comic) => (
+              <Card
+                key={comic._id}
+                item={comic}
+                type="comic"
+                isFavorite={true}
+                toggleFavorite={toggleFavoriteComic}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </main>
   ) : null;
 }
 

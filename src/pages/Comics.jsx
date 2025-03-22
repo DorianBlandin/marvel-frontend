@@ -80,7 +80,7 @@ function Comics({ userToken }) {
   };
 
   return (
-    <div>
+    <main>
       <div className="local-search-container">
         <div className="local-search">
           <FontAwesomeIcon icon={faSuperpowers} className="local-search-icon" />
@@ -125,7 +125,7 @@ function Comics({ userToken }) {
           Suivant
         </button>
       </div>
-    </div>
+    </main>
   );
 }
 

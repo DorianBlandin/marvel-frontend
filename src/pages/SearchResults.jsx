@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import Card from "../components/Card";
 
 function SearchResults() {
   const [characters, setCharacters] = useState([]);
@@ -35,7 +36,7 @@ function SearchResults() {
   }, [searchQuery]);
 
   return (
-    <div className="search-results-container">
+    <main>
       {loading ? (
         <p>Chargement...</p>
       ) : (
@@ -46,15 +47,13 @@ function SearchResults() {
               <p>Aucun personnage trouvé.</p>
             ) : (
               characters.map((char) => (
-                <div key={char._id} className="card">
-                  <Link to={`/character/${char._id}`}>
-                    <img
-                      src={`${char.thumbnail.path}/portrait_xlarge.${char.thumbnail.extension}`}
-                      alt={char.name}
-                    />
-                    <p>{char.name}</p>
-                  </Link>
-                </div>
+                <Card
+                  key={char._id}
+                  item={char}
+                  isFavorite={false}
+                  toggleFavorite={() => {}}
+                  isLink
+                />
               ))
             )}
           </div>
@@ -64,19 +63,18 @@ function SearchResults() {
               <p>Aucun comic trouvé.</p>
             ) : (
               comics.map((comic) => (
-                <div key={comic._id} className="card">
-                  <img
-                    src={`${comic.thumbnail.path}/portrait_xlarge.${comic.thumbnail.extension}`}
-                    alt={comic.title}
-                  />
-                  <p>{comic.title}</p>
-                </div>
+                <Card
+                  key={comic._id}
+                  item={comic}
+                  isFavorite={false}
+                  toggleFavorite={() => {}}
+                />
               ))
             )}
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 }
 
