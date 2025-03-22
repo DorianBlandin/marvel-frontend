@@ -28,7 +28,7 @@ function Comics({ userToken }) {
           }
         );
         setComics(response.data.results);
-        setTotalCount(response.data.count); // On récupère le total
+        setTotalCount(response.data.count);
       } catch (error) {
         console.error("Erreur lors de la récupération des comics :", error);
       }
