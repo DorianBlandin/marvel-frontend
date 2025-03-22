@@ -16,7 +16,7 @@ const Hero = () => {
           La bibliothèque
         </Link>
         <Link to="/favorites" className="hero-buttons">
-          Je les aime
+          Je les adore
         </Link>
       </div>
     </div>

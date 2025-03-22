@@ -23,14 +23,13 @@
 
 .card p {
   font-size: 14px;
-  margin-top: 5px;
   font-weight: bold;
-  white-space: normal;
-  word-wrap: break-word;
-  text-align: center;
-  width: 100%;
-  overflow: hidden;
   color: #000000;
+  margin: 10px 0 0;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 2.4em;
 }
 
 .card a {
