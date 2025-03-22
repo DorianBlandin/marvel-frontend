@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
@@ -8,8 +9,13 @@ function Characters({ userToken }) {
   const [characters, setCharacters] = useState([]);
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [totalCount, setTotalCount] = useState(0);
+
+  const limit = 100;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page")) || 1;
+  const totalPages = Math.ceil(totalCount / limit);
 
   useEffect(() => {
     const fetchCharacters = async () => {
@@ -18,10 +24,11 @@ function Characters({ userToken }) {
         const response = await axios.get(
           "https://site--marvel--pj2lbzfpm8z4.code.run/characters",
           {
-            params: { limit: 100, skip: (page - 1) * 100, name: search },
+            params: { limit, skip: (page - 1) * limit, name: search },
           }
         );
         setCharacters(response.data.results);
+        setTotalCount(response.data.count);
       } catch (error) {
         console.error(
           "Erreur lors de la récupération des personnages :",
@@ -70,6 +77,10 @@ function Characters({ userToken }) {
     }
   };
 
+  const handlePageChange = (newPage) => {
+    setSearchParams({ page: newPage });
+  };
+
   return (
     <div>
       <div className="local-search-container">
@@ -103,11 +114,21 @@ function Characters({ userToken }) {
       )}
 
       <div className="pagination">
-        <button onClick={() => setPage((prev) => Math.max(1, prev - 1))}>
+        <button
+          onClick={() => handlePageChange(Math.max(1, page - 1))}
+          disabled={page === 1}
+        >
           Précédent
         </button>
-        <span>Page {page}</span>
-        <button onClick={() => setPage((prev) => prev + 1)}>Suivant</button>
+        <span>
+          Page {page} / {totalPages || "?"}
+        </span>
+        <button
+          onClick={() => handlePageChange(page + 1)}
+          disabled={page === totalPages}
+        >
+          Suivant
+        </button>
       </div>
     </div>
   );

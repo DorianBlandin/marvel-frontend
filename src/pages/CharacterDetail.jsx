@@ -10,7 +10,6 @@ function CharacterDetail({ userToken }) {
   const [favoriteComics, setFavoriteComics] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Récupération des infos du personnage
   useEffect(() => {
     const fetchCharacterDetails = async () => {
       try {
@@ -40,7 +39,6 @@ function CharacterDetail({ userToken }) {
     fetchComics();
   }, [characterId]);
 
-  // Récupération des favoris
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
@@ -59,7 +57,6 @@ function CharacterDetail({ userToken }) {
     }
   }, [userToken]);
 
-  // Fonction pour ajouter/retirer des favoris
   const toggleFavorite = async (comic) => {
     if (!userToken) return;
 
