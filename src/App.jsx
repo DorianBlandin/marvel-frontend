@@ -78,7 +78,7 @@ function App() {
     <Router>
       <Header userToken={userToken} onLogout={handleLogout} />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home userToken={userToken} />} />
         <Route
           path="/characters"
           element={

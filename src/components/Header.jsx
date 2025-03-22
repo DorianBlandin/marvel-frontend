@@ -133,7 +133,7 @@ function Header({ userToken, onLogout }) {
         <div className="auth-buttons">
           {userToken ? (
             <Link to="/" onClick={onLogout} className="connection-btn">
-              Se Déconnecter
+              Se déconnecter
             </Link>
           ) : (
             <>
