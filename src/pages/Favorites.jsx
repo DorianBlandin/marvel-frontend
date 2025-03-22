@@ -24,7 +24,6 @@ function Favorites({ userToken }) {
           "https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites",
           { params: { token: userToken } }
         );
-
         setFavoriteCharacters(response.data.favoriteCharacters || []);
         setFavoriteComics(response.data.favoriteComics || []);
       } catch (error) {
@@ -39,11 +38,8 @@ function Favorites({ userToken }) {
 
   const toggleFavoriteCharacter = async (char) => {
     try {
-      const isFav = favoriteCharacters.some((fav) => fav._id === char._id);
-      const route = isFav ? "/remove" : "";
-
       const response = await axios.post(
-        `https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites${route}`,
+        "https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites",
         {
           token: userToken,
           item: char,
@@ -52,7 +48,6 @@ function Favorites({ userToken }) {
       );
 
       setFavoriteCharacters(response.data.favoriteCharacters || []);
-      setFavoriteComics(response.data.favoriteComics || []);
     } catch (error) {
       console.error(
         "Erreur lors de la mise à jour des favoris personnage :",
@@ -63,11 +58,8 @@ function Favorites({ userToken }) {
 
   const toggleFavoriteComic = async (comic) => {
     try {
-      const isFav = favoriteComics.some((fav) => fav._id === comic._id);
-      const route = isFav ? "/remove" : "";
-
       const response = await axios.post(
-        `https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites${route}`,
+        "https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites",
         {
           token: userToken,
           item: comic,
@@ -75,7 +67,6 @@ function Favorites({ userToken }) {
         }
       );
 
-      setFavoriteCharacters(response.data.favoriteCharacters || []);
       setFavoriteComics(response.data.favoriteComics || []);
     } catch (error) {
       console.error("Erreur lors de la mise à jour des favoris comic :", error);
@@ -100,21 +91,18 @@ function Favorites({ userToken }) {
         <h3>Personnages favoris</h3>
         <div className="horizontal-scroll">
           {favoriteCharacters.length === 0 ? (
-            <p>Aucun personnage en favori.</p>
+            <p>Aucun personnage en favori 😱</p>
           ) : (
             <div className="scroll-container">
-              {favoriteCharacters
-                .filter((char) =>
-                  char.name.toLowerCase().includes(search.toLowerCase())
-                )
-                .map((char) => (
-                  <Card
-                    key={char._id}
-                    item={char}
-                    isFavorite={true}
-                    toggleFavorite={toggleFavoriteCharacter}
-                  />
-                ))}
+              {favoriteCharacters.map((char) => (
+                <Card
+                  key={char._id}
+                  item={char}
+                  type="character"
+                  isFavorite={true}
+                  toggleFavorite={toggleFavoriteCharacter}
+                />
+              ))}
             </div>
           )}
         </div>
@@ -122,21 +110,18 @@ function Favorites({ userToken }) {
         <h3>Comics favoris</h3>
         <div className="horizontal-scroll">
           {favoriteComics.length === 0 ? (
-            <p>Aucun comic en favori.</p>
+            <p>Aucun comic en favori 😭</p>
           ) : (
             <div className="scroll-container">
-              {favoriteComics
-                .filter((comic) =>
-                  comic.title.toLowerCase().includes(search.toLowerCase())
-                )
-                .map((comic) => (
-                  <Card
-                    key={comic._id}
-                    item={comic}
-                    isFavorite={true}
-                    toggleFavorite={toggleFavoriteComic}
-                  />
-                ))}
+              {favoriteComics.map((comic) => (
+                <Card
+                  key={comic._id}
+                  item={comic}
+                  type="comic"
+                  isFavorite={true}
+                  toggleFavorite={toggleFavoriteComic}
+                />
+              ))}
             </div>
           )}
         </div>

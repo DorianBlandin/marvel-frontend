@@ -53,19 +53,17 @@ function Characters({ userToken }) {
   }, [userToken]);
 
   const toggleFavorite = async (char) => {
-    try {
-      const isFavorite = favoriteCharacters.some((fav) => fav._id === char._id);
-      const route = isFavorite ? "remove" : "";
+    if (!userToken) return;
 
+    try {
       const response = await axios.post(
-        `https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites/${route}`,
+        "https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites",
         {
           token: userToken,
           item: char,
           type: "character",
         }
       );
-
       setFavoriteCharacters(response.data.favoriteCharacters || []);
     } catch (error) {
       console.error("Erreur lors de la mise à jour du favori :", error);

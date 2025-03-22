@@ -12,7 +12,7 @@ function Signup({ setUser }) {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "https://site--marvel--pj2lbzfpm8z4.code.run/signup",
+        "https://site--marvel--pj2lbzfpm8z4.code.run/user/signup",
         { email, password }
       );
 

@@ -3,12 +3,14 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import Card from "../components/Card";
 
-function CharacterDetail({ favoriteComics, toggleFavorite }) {
+function CharacterDetail({ userToken }) {
   const { characterId } = useParams();
   const [character, setCharacter] = useState(null);
   const [comics, setComics] = useState([]);
+  const [favoriteComics, setFavoriteComics] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Récupération des infos du personnage
   useEffect(() => {
     const fetchCharacterDetails = async () => {
       try {
@@ -26,11 +28,11 @@ function CharacterDetail({ favoriteComics, toggleFavorite }) {
         const response = await axios.get(
           `https://site--marvel--pj2lbzfpm8z4.code.run/comics/${characterId}`
         );
-
         setComics(response.data.comics);
       } catch (error) {
         console.error("Erreur lors de la récupération des comics :", error);
       }
+
       setLoading(false);
     };
 
@@ -38,9 +40,46 @@ function CharacterDetail({ favoriteComics, toggleFavorite }) {
     fetchComics();
   }, [characterId]);
 
-  if (loading) {
-    return <p>Chargement...</p>;
-  }
+  // Récupération des favoris
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await axios.get(
+          "https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites",
+          { params: { token: userToken } }
+        );
+        setFavoriteComics(response.data.favoriteComics || []);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des favoris :", error);
+      }
+    };
+
+    if (userToken) {
+      fetchFavorites();
+    }
+  }, [userToken]);
+
+  // Fonction pour ajouter/retirer des favoris
+  const toggleFavorite = async (comic) => {
+    if (!userToken) return;
+
+    try {
+      const response = await axios.post(
+        "https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites",
+        {
+          token: userToken,
+          item: comic,
+          type: "comic",
+        }
+      );
+
+      setFavoriteComics(response.data.favoriteComics || []);
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour du favori :", error);
+    }
+  };
+
+  if (loading || !character) return <p>Chargement...</p>;
 
   return (
     <div className="character-detail-container">
@@ -54,14 +93,14 @@ function CharacterDetail({ favoriteComics, toggleFavorite }) {
 
       <div className="comics-found">
         <h3>Présent·e·s dans :</h3>
-        {comics && comics.length > 0 ? (
+        {comics.length > 0 ? (
           <div className="comics-grid">
             {comics.map((comic) => (
               <Card
                 key={comic._id}
                 item={comic}
                 isFavorite={favoriteComics.some((fav) => fav._id === comic._id)}
-                toggleFavorite={toggleFavorite}
+                toggleFavorite={() => toggleFavorite(comic)}
               />
             ))}
           </div>
