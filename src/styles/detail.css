@@ -42,7 +42,7 @@
 
 .character-detail-container p {
   margin-bottom: 15px;
-  max-width: 1220px;
+  max-width: 70%;
 }
 
 .character-detail-container h3 {
@@ -94,7 +94,7 @@
 
 .comic-detail-container p {
   margin-bottom: 15px;
-  max-width: 800px;
+  max-width: 70%;
 }
 
 .comic-detail-container h3 {
