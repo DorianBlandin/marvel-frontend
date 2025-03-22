@@ -26,6 +26,9 @@ function Home({ userToken }) {
 
         const favoriteCharacters =
           favoritesResponse.data.favoriteCharacters || [];
+        const alreadyFavoritedComics =
+          favoritesResponse.data.favoriteComics || [];
+
         const allComics = [];
 
         for (const character of favoriteCharacters) {
@@ -35,7 +38,12 @@ function Home({ userToken }) {
           const comics = comicsResponse.data.comics;
 
           for (const comic of comics) {
-            if (!allComics.find((c) => c._id === comic._id)) {
+            const isAlreadyFavorited = alreadyFavoritedComics.some(
+              (fav) => fav._id === comic._id
+            );
+            const isAlreadyListed = allComics.some((c) => c._id === comic._id);
+
+            if (!isAlreadyFavorited && !isAlreadyListed) {
               allComics.push(comic);
             }
           }
@@ -54,13 +62,30 @@ function Home({ userToken }) {
     fetchRecommendedComics();
   }, [userToken]);
 
+  const toggleFavorite = async (comic) => {
+    try {
+      const response = await axios.post(
+        "https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites",
+        {
+          token: userToken,
+          item: comic,
+          type: "comic",
+        }
+      );
+
+      setRecommendedComics((prev) => prev.filter((c) => c._id !== comic._id));
+    } catch (error) {
+      console.error("Erreur lors de l'ajout en favori :", error);
+    }
+  };
+
   return (
     <section className="home-main">
       <div className="home-background">
         <Hero />
 
         <div className="recommended-container">
-          <h2>👇 Ces comics pourraient t'intéresser 👀</h2>
+          <h2>👀 Ces comics pourraient t'intéresser 👇</h2>
 
           {loadingRecommendations ? (
             <p className="recommendation-message">Chargement...</p>
@@ -76,7 +101,7 @@ function Home({ userToken }) {
                   key={comic._id}
                   item={comic}
                   isFavorite={false}
-                  toggleFavorite={() => {}}
+                  toggleFavorite={() => toggleFavorite(comic)}
                 />
               ))}
             </div>
