@@ -41,9 +41,21 @@ function Card({ item, isFavorite, toggleFavorite }) {
   return (
     <div className="card">
       {item.name ? (
-        <Link to={`/character/${item._id}`}>{content}</Link>
+        <Link to={`/character/${item._id}`}>
+          <img
+            src={`${item.thumbnail.path}/portrait_uncanny.${item.thumbnail.extension}`}
+            alt={item.name || item.title}
+          />
+          <p>{item.name}</p>
+        </Link>
       ) : (
-        content
+        <Link to={`/comic/${item._id}`}>
+          <img
+            src={`${item.thumbnail.path}/portrait_uncanny.${item.thumbnail.extension}`}
+            alt={item.name || item.title}
+          />
+          <p>{item.title}</p>
+        </Link>
       )}
 
       <button className="favorite-btn" onClick={() => toggleFavorite(item)}>

@@ -17,6 +17,7 @@ import Login from "./pages/Login";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
+import ComicDetail from "./pages/ComicDetail";
 
 function App() {
   const [userToken, setUserToken] = useState(
@@ -116,6 +117,7 @@ function App() {
         <Route path="/signup" element={<Signup setUser={setUserToken} />} />
         <Route path="/login" element={<Login setUser={setUserToken} />} />
         <Route path="*" element={<h2>404 - Page non trouvée</h2>} />
+        <Route path="/comic/:comicId" element={<ComicDetail />} />
       </Routes>
       <Footer />
     </Router>

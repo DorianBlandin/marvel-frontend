@@ -68,3 +68,36 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+.comic-image {
+  max-width: 200px;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.comic-detail-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+.comic-detail-container h2 {
+  font-size: 30px;
+  border: gray solid 2px;
+  border-radius: 20px;
+  padding: 5px 15px;
+  display: inline-block;
+}
+
+.comic-detail-container p {
+  margin-bottom: 15px;
+  max-width: 800px;
+}
+
+.comic-detail-container h3 {
+  margin-top: 15px;
+  font-size: 20px;
+}
