@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 
-function Card({ item, isFavorite, toggleFavorite }) {
+function Card({ item, isFavorite, toggleFavorite, hideTitle = false }) {
   const [imageUrl, setImageUrl] = useState(
     `${item.thumbnail.path}/portrait_uncanny.${item.thumbnail.extension}`
   );
@@ -43,7 +43,7 @@ function Card({ item, isFavorite, toggleFavorite }) {
           onError={handleImageError}
           className="card-image"
         />
-        <p>{title}</p>
+        {!hideTitle && <p>{title}</p>}
       </Link>
 
       <button className="favorite-btn" onClick={() => toggleFavorite(item)}>

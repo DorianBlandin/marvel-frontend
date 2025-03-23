@@ -81,11 +81,15 @@ function CharacterDetail({ userToken }) {
   return (
     <div className="character-detail-container">
       <h2>{character.name}</h2>
-      <img
-        src={`${character.thumbnail.path}/portrait_xlarge.${character.thumbnail.extension}`}
-        alt={character.name}
-        className="character-image"
+
+      {/* 👉 Ici on remplace l'image par Card avec hideTitle */}
+      <Card
+        item={character}
+        isFavorite={false}
+        toggleFavorite={() => {}}
+        hideTitle={true}
       />
+
       <p>{character.description || "Pas de description disponible."}</p>
 
       <div className="comics-found">

@@ -69,12 +69,6 @@
   justify-content: center;
 }
 
-.comic-image {
-  max-width: 200px;
-  border-radius: 10px;
-  margin: 10px 0;
-}
-
 .comic-detail-container {
   text-align: center;
   display: flex;

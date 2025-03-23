@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Card from "../components/Card";
 
 function ComicDetail() {
   const { comicId } = useParams();
@@ -30,11 +31,14 @@ function ComicDetail() {
   return (
     <div className="comic-detail-container">
       <h2>{comic.title}</h2>
-      <img
-        src={`${comic.thumbnail.path}/portrait_uncanny.${comic.thumbnail.extension}`}
-        alt={comic.title}
-        className="comic-image"
+
+      <Card
+        item={comic}
+        isFavorite={false}
+        toggleFavorite={() => {}}
+        hideTitle={true}
       />
+
       <p>
         {comic.description || "Pas de description disponible pour ce comic."}
       </p>
