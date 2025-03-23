@@ -81,7 +81,7 @@ function Header({ userToken, onLogout }) {
     if (item.type === "character") {
       navigate(`/character/${item.id}`);
     } else {
-      navigate(`/comics`);
+      navigate(`/comic/${item.id}`);
     }
     setHeaderSearchQuery("");
     setHeaderSuggestions([]);

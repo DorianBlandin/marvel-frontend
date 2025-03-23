@@ -4,59 +4,47 @@ import { FaHeart } from "react-icons/fa";
 
 function Card({ item, isFavorite, toggleFavorite }) {
   const [imageUrl, setImageUrl] = useState(
-    `${item.thumbnail.path}/portrait_xlarge.${item.thumbnail.extension}`
+    `${item.thumbnail.path}/portrait_uncanny.${item.thumbnail.extension}`
   );
+
+  const fallbackFormats = [
+    "portrait_fantastic",
+    "portrait_medium",
+    "portrait_small",
+    "standard_fantastic",
+    "standard_large",
+    "standard_medium",
+    "standard_small",
+    "standard_amazing",
+  ];
 
   const handleImageError = () => {
-    const fallbackFormats = [
-      "portrait_uncanny",
-      "portrait_fantastic",
-      "portrait_medium",
-      "standard_fantastic",
-      "standard_large",
-      "standard_medium",
-    ];
+    const currentFormat = imageUrl.split("/").pop().split(".")[0];
 
-    for (const format of fallbackFormats) {
-      const fallbackUrl = `${item.thumbnail.path}/${format}.${item.thumbnail.extension}`;
-      if (!imageUrl.includes(format)) {
-        setImageUrl(fallbackUrl);
-        break;
-      }
-    }
+    const currentIndex = fallbackFormats.indexOf(currentFormat);
+    const nextFormat =
+      fallbackFormats[currentIndex + 1] || "image_not_available";
+    const fallbackUrl = `${item.thumbnail.path}/${nextFormat}.${item.thumbnail.extension}`;
+    setImageUrl(fallbackUrl);
   };
 
-  const content = (
-    <>
-      <img
-        src={imageUrl}
-        alt={item.name || item.title}
-        onError={handleImageError}
-        className="card-image"
-      />
-      <p>{item.name || item.title}</p>
-    </>
-  );
+  const isCharacter = Boolean(item.name);
+  const linkPath = isCharacter
+    ? `/character/${item._id}`
+    : `/comic/${item._id}`;
+  const title = item.name || item.title;
 
   return (
     <div className="card">
-      {item.name ? (
-        <Link to={`/character/${item._id}`}>
-          <img
-            src={`${item.thumbnail.path}/portrait_uncanny.${item.thumbnail.extension}`}
-            alt={item.name || item.title}
-          />
-          <p>{item.name}</p>
-        </Link>
-      ) : (
-        <Link to={`/comic/${item._id}`}>
-          <img
-            src={`${item.thumbnail.path}/portrait_uncanny.${item.thumbnail.extension}`}
-            alt={item.name || item.title}
-          />
-          <p>{item.title}</p>
-        </Link>
-      )}
+      <Link to={linkPath}>
+        <img
+          src={imageUrl}
+          alt={title}
+          onError={handleImageError}
+          className="card-image"
+        />
+        <p>{title}</p>
+      </Link>
 
       <button className="favorite-btn" onClick={() => toggleFavorite(item)}>
         <FaHeart color={isFavorite ? "red" : "black"} />

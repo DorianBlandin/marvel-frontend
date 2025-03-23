@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
 import Card from "../components/Card";
@@ -9,13 +9,26 @@ function Characters({ userToken }) {
   const [characters, setCharacters] = useState([]);
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
   const [totalCount, setTotalCount] = useState(0);
 
   const limit = 100;
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const page = Number(searchParams.get("page")) || 1;
-  const totalPages = Math.ceil(totalCount / limit);
+  const search = searchParams.get("search") || "";
+
+  useEffect(() => {
+    if (!searchParams.get("page")) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("page", "1");
+      if (!newParams.get("search")) newParams.set("search", "");
+      navigate(`/characters?${newParams.toString()}`, { replace: true });
+    }
+  }, []);
+
+  const handleSearchChange = (e) => {
+    setSearchParams({ page: 1, search: e.target.value });
+  };
 
   useEffect(() => {
     const fetchCharacters = async () => {
@@ -24,7 +37,11 @@ function Characters({ userToken }) {
         const response = await axios.get(
           "https://site--marvel--pj2lbzfpm8z4.code.run/characters",
           {
-            params: { limit, skip: (page - 1) * limit, name: search },
+            params: {
+              limit,
+              skip: (page - 1) * limit,
+              name: search,
+            },
           }
         );
         setCharacters(response.data.results);
@@ -39,7 +56,7 @@ function Characters({ userToken }) {
     };
 
     fetchCharacters();
-  }, [page, search]);
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -71,15 +88,14 @@ function Characters({ userToken }) {
           type: "character",
         }
       );
+
       setFavoriteCharacters(response.data.favoriteCharacters || []);
     } catch (error) {
       console.error("Erreur lors de la mise à jour du favori :", error);
     }
   };
 
-  const handlePageChange = (newPage) => {
-    setSearchParams({ page: newPage });
-  };
+  const totalPages = Math.ceil(totalCount / limit);
 
   return (
     <main>
@@ -90,7 +106,7 @@ function Characters({ userToken }) {
             type="text"
             placeholder="Rechercher un personnage..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={handleSearchChange}
           />
         </div>
       </div>
@@ -115,17 +131,17 @@ function Characters({ userToken }) {
 
       <div className="pagination">
         <button
-          onClick={() => handlePageChange(Math.max(1, page - 1))}
-          disabled={page === 1}
+          onClick={() => setSearchParams({ page: page - 1, search })}
+          disabled={page <= 1}
         >
           Précédent
         </button>
         <span>
-          Page {page} / {totalPages || "?"}
+          Page {page} / {totalPages}
         </span>
         <button
-          onClick={() => handlePageChange(page + 1)}
-          disabled={page === totalPages}
+          onClick={() => setSearchParams({ page: page + 1, search })}
+          disabled={page >= totalPages}
         >
           Suivant
         </button>

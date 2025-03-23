@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSuperpowers } from "@fortawesome/free-brands-svg-icons";
 import Card from "../components/Card";
@@ -9,13 +9,26 @@ function Comics({ userToken }) {
   const [comics, setComics] = useState([]);
   const [favoriteComics, setFavoriteComics] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
   const [totalCount, setTotalCount] = useState(0);
 
   const limit = 100;
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const page = Number(searchParams.get("page")) || 1;
-  const totalPages = Math.ceil(totalCount / limit);
+  const search = searchParams.get("search") || "";
+
+  useEffect(() => {
+    if (!searchParams.get("page")) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("page", "1");
+      if (!newParams.get("search")) newParams.set("search", "");
+      navigate(`/comics?${newParams.toString()}`, { replace: true });
+    }
+  }, []);
+
+  const handleSearchChange = (e) => {
+    setSearchParams({ page: 1, search: e.target.value });
+  };
 
   useEffect(() => {
     const fetchComics = async () => {
@@ -27,8 +40,8 @@ function Comics({ userToken }) {
             params: { limit, skip: (page - 1) * limit, title: search },
           }
         );
-        setComics(response.data.results);
-        setTotalCount(response.data.count);
+        setComics(response.data.results || []);
+        setTotalCount(response.data.count || 0);
       } catch (error) {
         console.error("Erreur lors de la récupération des comics :", error);
       }
@@ -36,7 +49,7 @@ function Comics({ userToken }) {
     };
 
     fetchComics();
-  }, [page, search]);
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -75,9 +88,7 @@ function Comics({ userToken }) {
     }
   };
 
-  const handlePageChange = (newPage) => {
-    setSearchParams({ page: newPage });
-  };
+  const totalPages = Math.ceil(totalCount / limit);
 
   return (
     <main>
@@ -88,7 +99,7 @@ function Comics({ userToken }) {
             type="text"
             placeholder="Rechercher un comic..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={handleSearchChange}
           />
         </div>
       </div>
@@ -110,17 +121,17 @@ function Comics({ userToken }) {
 
       <div className="pagination">
         <button
-          onClick={() => handlePageChange(Math.max(1, page - 1))}
-          disabled={page === 1}
+          onClick={() => setSearchParams({ page: page - 1, search })}
+          disabled={page <= 1}
         >
           Précédent
         </button>
         <span>
-          Page {page} / {totalPages || "?"}
+          Page {page} / {totalPages}
         </span>
         <button
-          onClick={() => handlePageChange(page + 1)}
-          disabled={page === totalPages}
+          onClick={() => setSearchParams({ page: page + 1, search })}
+          disabled={page >= totalPages}
         >
           Suivant
         </button>
