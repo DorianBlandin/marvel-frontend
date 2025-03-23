@@ -3,11 +3,6 @@
   padding: 20px;
 }
 
-.character-image {
-  max-width: 200px;
-  border-radius: 10px;
-  margin: 10px 0;
-}
 .back-btn {
   display: inline-block;
   margin-top: 20px;
@@ -43,6 +38,7 @@
 .character-detail-container p {
   margin-bottom: 15px;
   max-width: 70%;
+  text-align: justify;
 }
 
 .character-detail-container h3 {
@@ -89,6 +85,7 @@
 .comic-detail-container p {
   margin-bottom: 15px;
   max-width: 70%;
+  text-align: justify;
 }
 
 .comic-detail-container h3 {
