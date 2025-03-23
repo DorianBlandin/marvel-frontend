@@ -69,24 +69,26 @@ function ComicDetail({ userToken }) {
   if (!comic) return <p>Comic introuvable.</p>;
 
   return (
-    <div className="comic-detail-container">
-      <h2>{comic.title}</h2>
+    <main>
+      <div className="detail-container">
+        <h2>{comic.title}</h2>
 
-      <Card
-        item={comic}
-        isFavorite={favoriteComics.some((fav) => fav._id === comic._id)}
-        toggleFavorite={() => toggleFavorite(comic)}
-        hideTitle={true}
-      />
+        <Card
+          item={comic}
+          isFavorite={favoriteComics.some((fav) => fav._id === comic._id)}
+          toggleFavorite={() => toggleFavorite(comic)}
+          hideTitle={true}
+        />
 
-      <p>
-        {comic.description || "Pas de description disponible pour ce comic."}
-      </p>
+        <p>
+          {comic.description || "Pas de description disponible pour ce comic."}
+        </p>
 
-      <Link to="/comics" className="back-btn">
-        ← Retour à la liste des comics
-      </Link>
-    </div>
+        <Link to="/comics" className="back-btn">
+          ← Retour à la liste des comics
+        </Link>
+      </div>
+    </main>
   );
 }
 

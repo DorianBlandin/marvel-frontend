@@ -5,8 +5,8 @@ const Hero = () => {
     <div className="hero-container">
       <h1>Bienvenue dans l'univers Marvel !</h1>
       <p>
-        Découvrez les héros, vilains et aventures de l’univers Marvel. Explorez
-        les personnages et les comics, et ajoutez vos favoris !
+        Découvre les héros, vilains et aventures de l’univers Marvel. Explore
+        les personnages et les comics, et ajoute-les en favoris !
       </p>
       <div className="hero-buttons-container">
         <Link to="/characters" className="hero-buttons">

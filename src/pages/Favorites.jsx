@@ -73,6 +73,14 @@ function Favorites({ userToken }) {
     }
   };
 
+  const filteredCharacters = favoriteCharacters.filter((char) =>
+    char.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const filteredComics = favoriteComics.filter((comic) =>
+    comic.title.toLowerCase().includes(search.toLowerCase())
+  );
+
   return userToken ? (
     <main>
       <div className="local-search-container">
@@ -86,13 +94,18 @@ function Favorites({ userToken }) {
           />
         </div>
       </div>
+
       <div className="horizontal-scroll">
         <h3>Personnages favoris</h3>
-        {favoriteCharacters.length === 0 ? (
-          <p>Aucun personnage en favori 😱</p>
+        {filteredCharacters.length === 0 ? (
+          <p>
+            {search
+              ? "Aucun personnage trouvé avec cette recherche."
+              : "Aucun personnage en favori 😱"}
+          </p>
         ) : (
           <div className="scroll-container">
-            {favoriteCharacters.map((char) => (
+            {filteredCharacters.map((char) => (
               <Card
                 key={char._id}
                 item={char}
@@ -107,11 +120,15 @@ function Favorites({ userToken }) {
 
       <div className="horizontal-scroll">
         <h3>Comics favoris</h3>
-        {favoriteComics.length === 0 ? (
-          <p>Aucun comic en favori 😭</p>
+        {filteredComics.length === 0 ? (
+          <p>
+            {search
+              ? "Aucun comic trouvé avec cette recherche."
+              : "Aucun comic en favori 😭"}
+          </p>
         ) : (
           <div className="scroll-container">
-            {favoriteComics.map((comic) => (
+            {filteredComics.map((comic) => (
               <Card
                 key={comic._id}
                 item={comic}

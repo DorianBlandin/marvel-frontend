@@ -1,8 +1,3 @@
-.character-detail-container {
-  text-align: center;
-  padding: 20px;
-}
-
 .back-btn {
   display: inline-block;
   margin-top: 20px;
@@ -19,76 +14,46 @@
   background-color: #c51d24;
 }
 
-.character-detail-container {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.character-detail-container h2 {
+.detail-container h2 {
   font-size: 30px;
   border: gray solid 2px;
   border-radius: 20px;
   padding: 5px 15px;
   display: inline-block;
+  text-align: center;
+  margin-top: 15px;
 }
 
-.character-detail-container p {
-  margin-bottom: 15px;
+.detail-container p {
+  margin-bottom: 5px;
   max-width: 70%;
   text-align: justify;
 }
 
-.character-detail-container h3 {
+.detail-container h3 {
   margin-top: 15px;
   font-size: 20px;
+}
+
+.detail-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
 }
 
 .comics-found {
   background-color: #202020;
   border-radius: 10px;
   display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.comics-grid {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-  max-width: 1200px;
-  margin: auto;
-  border-radius: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.comic-detail-container {
-  text-align: center;
-  display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  width: 90%;
   padding: 20px;
 }
 
-.comic-detail-container h2 {
-  font-size: 30px;
-  border: gray solid 2px;
-  border-radius: 20px;
-  padding: 5px 15px;
-  display: inline-block;
-}
-
-.comic-detail-container p {
-  margin-bottom: 15px;
-  max-width: 70%;
-  text-align: justify;
-}
-
-.comic-detail-container h3 {
-  margin-top: 15px;
-  font-size: 20px;
+.comics-found h3 {
+  text-align: center;
+  max-width: fit-content;
+  margin-top: 0px;
 }

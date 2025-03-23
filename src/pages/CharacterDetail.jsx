@@ -99,40 +99,46 @@ function CharacterDetail({ userToken }) {
   if (loading || !character) return <p>Chargement...</p>;
 
   return (
-    <div className="character-detail-container">
-      <h2>{character.name}</h2>
+    <main>
+      <div className="detail-container">
+        <h2>{character.name}</h2>
 
-      <Card
-        item={character}
-        isFavorite={favoriteCharacters.some((fav) => fav._id === character._id)}
-        toggleFavorite={() => toggleFavoriteCharacter(character)}
-        hideTitle={true}
-      />
+        <Card
+          item={character}
+          isFavorite={favoriteCharacters.some(
+            (fav) => fav._id === character._id
+          )}
+          toggleFavorite={() => toggleFavoriteCharacter(character)}
+          hideTitle={true}
+        />
 
-      <p>{character.description || "Pas de description disponible."}</p>
+        <p>{character.description || "Pas de description disponible."}</p>
 
-      <div className="comics-found">
-        <h3>Présent·e·s dans :</h3>
-        {comics.length > 0 ? (
-          <div className="comics-grid">
-            {comics.map((comic) => (
-              <Card
-                key={comic._id}
-                item={comic}
-                isFavorite={favoriteComics.some((fav) => fav._id === comic._id)}
-                toggleFavorite={() => toggleFavoriteComic(comic)}
-              />
-            ))}
-          </div>
-        ) : (
-          <p>Aucun comic trouvé pour ce personnage.</p>
-        )}
+        <div className="comics-found">
+          <h3>Présent·e·s dans :</h3>
+          {comics.length > 0 ? (
+            <div className="grid-container">
+              {comics.map((comic) => (
+                <Card
+                  key={comic._id}
+                  item={comic}
+                  isFavorite={favoriteComics.some(
+                    (fav) => fav._id === comic._id
+                  )}
+                  toggleFavorite={() => toggleFavoriteComic(comic)}
+                />
+              ))}
+            </div>
+          ) : (
+            <p>Aucun comic trouvé pour ce personnage.</p>
+          )}
+        </div>
+
+        <Link to="/characters" className="back-btn">
+          ← Retour à la liste des personnages
+        </Link>
       </div>
-
-      <Link to="/characters" className="back-btn">
-        ← Retour à la liste des personnages
-      </Link>
-    </div>
+    </main>
   );
 }
 
