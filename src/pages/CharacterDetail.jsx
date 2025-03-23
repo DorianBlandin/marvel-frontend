@@ -8,6 +8,7 @@ function CharacterDetail({ userToken }) {
   const [character, setCharacter] = useState(null);
   const [comics, setComics] = useState([]);
   const [favoriteComics, setFavoriteComics] = useState([]);
+  const [favoriteCharacters, setFavoriteCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,7 +32,6 @@ function CharacterDetail({ userToken }) {
       } catch (error) {
         console.error("Erreur lors de la récupération des comics :", error);
       }
-
       setLoading(false);
     };
 
@@ -44,9 +44,12 @@ function CharacterDetail({ userToken }) {
       try {
         const response = await axios.get(
           "https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites",
-          { params: { token: userToken } }
+          {
+            params: { token: userToken },
+          }
         );
         setFavoriteComics(response.data.favoriteComics || []);
+        setFavoriteCharacters(response.data.favoriteCharacters || []);
       } catch (error) {
         console.error("Erreur lors de la récupération des favoris :", error);
       }
@@ -57,7 +60,7 @@ function CharacterDetail({ userToken }) {
     }
   }, [userToken]);
 
-  const toggleFavorite = async (comic) => {
+  const toggleFavoriteComic = async (comic) => {
     if (!userToken) return;
 
     try {
@@ -69,8 +72,25 @@ function CharacterDetail({ userToken }) {
           type: "comic",
         }
       );
-
       setFavoriteComics(response.data.favoriteComics || []);
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour du favori :", error);
+    }
+  };
+
+  const toggleFavoriteCharacter = async (char) => {
+    if (!userToken) return;
+
+    try {
+      const response = await axios.post(
+        "https://site--marvel--pj2lbzfpm8z4.code.run/user/favorites",
+        {
+          token: userToken,
+          item: char,
+          type: "character",
+        }
+      );
+      setFavoriteCharacters(response.data.favoriteCharacters || []);
     } catch (error) {
       console.error("Erreur lors de la mise à jour du favori :", error);
     }
@@ -82,11 +102,10 @@ function CharacterDetail({ userToken }) {
     <div className="character-detail-container">
       <h2>{character.name}</h2>
 
-      {/* 👉 Ici on remplace l'image par Card avec hideTitle */}
       <Card
         item={character}
-        isFavorite={false}
-        toggleFavorite={() => {}}
+        isFavorite={favoriteCharacters.some((fav) => fav._id === character._id)}
+        toggleFavorite={() => toggleFavoriteCharacter(character)}
         hideTitle={true}
       />
 
@@ -101,7 +120,7 @@ function CharacterDetail({ userToken }) {
                 key={comic._id}
                 item={comic}
                 isFavorite={favoriteComics.some((fav) => fav._id === comic._id)}
-                toggleFavorite={() => toggleFavorite(comic)}
+                toggleFavorite={() => toggleFavoriteComic(comic)}
               />
             ))}
           </div>
